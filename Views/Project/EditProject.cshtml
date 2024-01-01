@@ -1,0 +1,152 @@
+﻿@model FYPM.Models.ProjectDetail
+@{
+    ViewBag.Title = "EditProject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EditProject</h2>
+
+<style>
+    .form-container {
+        margin-top: 30px;
+    }
+
+    .form-content {
+        background-color: #f5f5f5;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-title {
+        font-size: 28px;
+        text-transform: uppercase;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-size: 16px;
+        color: #555;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .form-button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .document-item {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+    }
+
+    .row-number {
+        margin-right: 10px;
+        font-weight: bold;
+    }
+
+    .delete-button {
+        margin-left: auto;
+    }
+</style>
+<div class="container form-container">
+    @using (Html.BeginForm("EditProject", "Project", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.ProjectId)
+
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8 form-content">
+                <h3 class="form-title">Edit Project</h3>
+                <div class="form-group">
+                    @if (Model.ProjectDocuments.Count > 0)
+                    {
+                        <label class="form-label">Existing Documents</label>
+                        <ul>
+                            @for (var i = 0; i < Model.ProjectDocuments.Count(); i++)
+                            {
+                                var document = Model.ProjectDocuments.ElementAt(i);
+                                var rowNumber = i + 1;
+                                <li class="document-item">
+                                    <span class="row-number">@rowNumber.</span>
+                                    <a href="@Url.Action("DownloadExistingDocument", "Project", new { documentFileName = document.DocumentName })">@document.DocumentName</a>
+                                    <a href="@Url.Action("DeleteDocument", "Project", new { documentId = document.DocumentId, projectId = Model.ProjectId })" class="btn btn-sm btn-danger delete-button">Delete</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <label class="form-label">Existing Documents</label>
+                        <p>No existing documents available.</p>
+                    }
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description)
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Skills)
+                    @Html.TextBoxFor(model => model.Skills, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Domain)
+                    @Html.DropDownListFor(model => model.Domain, new SelectList(new List<string>
+                    {
+                        "Web Application",
+                        "Mobile Application",
+                        "Data Science",
+                        "Networking"
+                    }), "Please Select Domain Type", new { @class = "selectpicker form-control", data_style = "btn-primary", style = "height: auto;" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Tools)
+                    @Html.TextBoxFor(model => model.Tools, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StudentsAllowed)
+                    @Html.TextBoxFor(model => model.StudentsAllowed, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Upload Documents:")
+                    @Html.TextBox("UploadDocuments", "", new { type = "file", @class = "form-control-file", multiple = "multiple" })
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success form-button">Update</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
