@@ -7,12 +7,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using Ionic.Zip;
 
 namespace FYPM.Controllers
 {
-    public class ProjectController : Controller
+    public class ProjectController : Controller                         
     {
-        FYP_MSEntities dbContext = new FYP_MSEntities();
+        FYP_MSEntities1 dbContext = new FYP_MSEntities1();
         // GET: UploadProject
         public ActionResult UploadProject()
         {
@@ -185,10 +186,93 @@ namespace FYPM.Controllers
             return File(documentPath, contentType, documentFileName);
         }
 
+
+        #region student
+        public ActionResult ListAllStudentProjects()
+        {
+            return View("StudentProjectGrid", dbContext.ProjectDetails.ToList());
+        }
+
+        public ActionResult ShowAllTasks()
+        {
+            var userId = Convert.ToInt32(Session["UserID"]);
+            List<Task> tasks = dbContext.Tasks.Where(x => x.AssignedTo == userId).ToList();
+            return View("StudentTask", tasks);
+        }
+
+        public ActionResult DownloadDocuments(int projectId)
+        {
+            var documents = dbContext.ProjectDocuments?.Where(x => x.ProjectId == projectId)?.Select(x => new
+            {
+                x.DocumentPath,
+                x.DocumentName
+            }).ToList();
+
+            if (documents != null && documents.Count() > 0)
+            {
+                using (MemoryStream zipStream = new MemoryStream())
+                {
+                    using (ZipFile zipFile = new ZipFile())
+                    {
+                        foreach (var document in documents)
+                        {
+                            if (!string.IsNullOrEmpty(document.DocumentPath) && System.IO.File.Exists(document.DocumentPath))
+                            {
+                                byte[] fileBytes = System.IO.File.ReadAllBytes(document.DocumentPath);
+                                string fileName = document.DocumentName;
+                                zipFile.AddEntry(fileName, fileBytes);
+                            }
+                        }
+
+                        zipFile.Save(zipStream);
+                    }
+
+                    string zipFileName = "task_documents.zip";
+
+                    return File(zipStream.ToArray(), "application/zip", zipFileName);
+                }
+            }
+
+            return HttpNotFound();
+        }
+
+        [HttpPost]
+        public JsonResult UpdateTaskStatus(int taskId, int studentId, string newStatus)
+        {
+            var task = dbContext.Tasks.FirstOrDefault(t => t.TaskId == taskId && t.AssignedTo == studentId);
+            if (task != null)
+            {
+                task.TaskStatus = newStatus;
+                dbContext.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false, message = "Task not found." });
+        }
+
+        public ActionResult RegisterProject(int projectId)
+        {
+            var userId = Convert.ToInt32(Session["UserID"]);
+            var user = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            var project = dbContext.ProjectDetails.FirstOrDefault(p => p.ProjectId == projectId);
+
+            var message = new Message
+            {
+                MessageText = user.FirstName + " " + user.LastName + " requested for the " + project.Title + " project.",
+                SenderId = user.UserId,
+                ReceiverId = project.SupervisorID,
+                MessageDate = DateTime.Now
+            };
+            dbContext.Messages.Add(message);
+            dbContext.SaveChanges();
+            return Json(1);
+        }
+
+        #endregion
+
         
 
     }
-  
+
 
 
 }

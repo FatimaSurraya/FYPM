@@ -10,14 +10,14 @@ namespace FYPM.Controllers
     public class UsersController : Controller
 
     {
-        FYP_MSEntities db1 = new FYP_MSEntities();
+        FYP_MSEntities1 db1 = new FYP_MSEntities1();
         // GET: Users
         // GET: Users
         // GET: Users
         public ActionResult UsersDetail()
         {
             var userId = Convert.ToInt32(Session["UserID"]);
-            return View(db1.Users.Where(x => x.UserId != userId && x.UserType.Type!="Admin").ToList());
+            return View(db1.Users.Where(x => x.UserId != userId && x.UserType.Type != "Admin").ToList());
         }
 
 

@@ -11,7 +11,7 @@ namespace FYPM.Controllers
 {
     public class HomeController : Controller
     {
-        FYP_MSEntities db1 = new FYP_MSEntities();
+        FYP_MSEntities1 db1 = new FYP_MSEntities1();
         public ActionResult Index()
         {
             return View();

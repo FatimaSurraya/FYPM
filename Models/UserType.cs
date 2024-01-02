@@ -14,6 +14,8 @@ namespace FYPM.Models
     
     public partial class UserType
     {
+        internal string Type;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UserType()
         {
@@ -25,6 +27,5 @@ namespace FYPM.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
-        public string Type { get; internal set; }
     }
 }

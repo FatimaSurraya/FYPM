@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewBag.Title = "AddTask";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model FYPM.Models.ViewModel.TaskViewModel
+
+
+<style>
+    .container {
+        margin-top: 30px;
+    }
+
+    .col-md-8 {
+        background-color: #f5f5f5;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+        font-size: 28px;
+        text-transform: uppercase;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-size: 16px;
+        color: #555;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .btn-success {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+            <h1>Create Task</h1>
+
+            <div class="form-group">
+                <label for="Project">Project:</label>
+                @Html.DropDownListFor(model => model.SelectedProjectId, Model.Projects, "Select Project", new { @class = "form-control", style = "height: auto;" })
+            </div>
+
+            <div class="form-group">
+                <label for="SelectedAssignedTo">Assign To:</label>
+                <select class="form-control" id="SelectedAssignedTo" multiple="multiple" name="SelectedAssignedTo">
+                    @foreach (var option in Model.AssignedToOptions)
+                    {
+                        <option value="@option.Value">@option.Text</option>
+                    }
+                </select>
+            </div>
+
+            <input type="hidden" id="SelectedAssignedToValues" name="SelectedAssignedToValues" />
+
+            <div class="form-group">
+                <label for="DueDate">Due Date:</label>
+                <input type="date" id="datepicker" name="datepicker" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-success" onclick="submitTask()">Submit</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    function submitTask() {
+        var selectedProjectId = $("#SelectedProjectId").val();
+        var selectedAssignedTo = $("#SelectedAssignedTo").val();
+        var dueDate = $("#datepicker").val();
+
+        var taskData = {
+            SelectedProjectId: selectedProjectId,
+            DueDate: dueDate,
+            SelectedAssignedTo: selectedAssignedTo
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Project/SaveTask",
+            data: JSON.stringify(taskData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                if (response === 1) {
+                    window.location.href = "/Project/ListAllTasks";
+                }
+            }
+        });
+    }
+
+    jQuery(document).ready(function ($) {
+        $('#SelectedAssignedTo').select2();
+    });
+
+</script>

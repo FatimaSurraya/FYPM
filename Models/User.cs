@@ -35,6 +35,7 @@ namespace FYPM.Models
         public string Password { get; set; }
         public Nullable<int> UserTypeId { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+        public string CustomId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Meeting> Meetings { get; set; }
