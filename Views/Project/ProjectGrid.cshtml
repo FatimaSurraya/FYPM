@@ -1,12 +1,12 @@
-﻿@model List<FYPM.Models.ProjectDetail>
+﻿
 @{
     ViewBag.Title = "ProjectDetails";
-    Layout = "~/Views/_LayoutPage1.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@model List<FYPM.Models.ProjectDetail>
 <h2 style="margin-left:10px;">Project Details</h2>
 
-<a style="margin-left:10px" href="@Url.Action("AddProject")" class="btn btn-primary">Create Project</a>
+<a style="margin-left:10px" href="@Url.Action("UploadProject")" class="btn btn-primary">Create Project</a>
 
 
 <div class="wrapper wrapper-content animated fadeInRight">

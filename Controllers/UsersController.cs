@@ -14,12 +14,23 @@ namespace FYPM.Controllers
         // GET: Users
         // GET: Users
         // GET: Users
+        //public ActionResult UsersDetail()
+        //{
+        //    var userId = Convert.ToInt32(Session["UserID"]);
+        //    return View(db1.Users.Where(x => x.UserId != userId && x.UserType.Type != "Admin").ToList());
+        //}
         public ActionResult UsersDetail()
         {
             var userId = Convert.ToInt32(Session["UserID"]);
-            return View(db1.Users.Where(x => x.UserId != userId && x.UserType.Type != "Admin").ToList());
-        }
 
+            // Retrieve users from the database without UserType.Type filtering
+            var usersFromDB = db1.Users.Where(x => x.UserId != userId).ToList();
+
+            // Perform additional filtering using LINQ to Objects
+            var filteredUsers = usersFromDB.Where(x => x.UserType != null && x.UserType.Type != "Admin").ToList();
+
+            return View(filteredUsers);
+        }
 
 
         [HttpPost]
@@ -53,5 +64,51 @@ namespace FYPM.Controllers
             return db1.Users.FirstOrDefault(u => u.UserId == id);
         }
 
+        public ActionResult Edit(int id)
+        {
+            var user = GetUserById(id);
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(User updatedUser)
+        {
+            try
+            {
+                var existingUser = GetUserById(updatedUser.UserId);
+                existingUser.FirstName = updatedUser.FirstName;
+                existingUser.LastName = updatedUser.LastName;
+                existingUser.Email = updatedUser.Email;
+                var userType = db1.UserTypes.FirstOrDefault(x => x.TypeName == updatedUser.UserType.TypeName);
+                existingUser.UserType = userType;
+                db1.SaveChanges();
+                return RedirectToAction("UsersDetail");
+            }
+            catch
+            {
+                return View(updatedUser);
+            }
+
+
+
+
+        }
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

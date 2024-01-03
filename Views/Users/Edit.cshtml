@@ -1,0 +1,113 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<FYPM.Models.User>
+
+
+<style>
+    .form-container {
+        margin-top: 30px;
+    }
+
+    .form-content {
+        background-color: #f5f5f5;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-title {
+        font-size: 28px;
+        text-transform: uppercase;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-size: 16px;
+        color: #555;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .form-button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+</style>
+@*<div class="container form-container">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8 form-content">
+            <h3 class="form-title">Edit User</h3>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(model => model.UserId)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UserId, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.CustomId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FirstName)
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LastName)
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UserType.TypeName, "Type", htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.UserType.TypeName, new SelectList(
+                        new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "Admin", Value = "Admin" },
+                            new SelectListItem { Text = "Supervisor", Value = "Supervisor" },
+                            new SelectListItem { Text = "Student", Value = "Student" }
+                        }, "Value", "Text", Model.UserType.TypeName), new { @class = "form-control", style = "height: auto;" })
+                    @Html.ValidationMessageFor(model => model.UserType.TypeName)
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success form-button">Save</button>
+                </div>
+            }
+
+            <div>
+                @Html.ActionLink("Back to List", "UsersDetail")
+            </div>
+        </div>
+    </div>
+</div>*@

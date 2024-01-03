@@ -103,6 +103,7 @@ namespace FYPM.Controllers
         public ActionResult Login()
         {
             return View();
+            //return RedirectToAction("Login");
         }
         public ActionResult Logout()
         {

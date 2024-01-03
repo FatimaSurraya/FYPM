@@ -7,7 +7,7 @@ namespace RMS.Services
 {
     public static class ValidationService
     {
-        static FYP_MSEntities dbContext = new FYP_MSEntities();
+        static FYP_MSEntities1 dbContext = new FYP_MSEntities1();
 
         public static bool IsValidEmail(string email)
         {

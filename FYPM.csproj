@@ -276,6 +276,7 @@
     <Content Include="Views\Task\AddTask.cshtml" />
     <Content Include="Views\Task\EditTask.cshtml" />
     <Content Include="Views\Task\StudentTask.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

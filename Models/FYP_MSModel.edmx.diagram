@@ -10,7 +10,7 @@
         <EntityTypeShape EntityType="FYP_MSModel.ProjectDetail" Width="1.5" PointX="5.25" PointY="9" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.ProjectDocument" Width="1.5" PointX="7.5" PointY="9.625" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.ProjectList" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FYP_MSModel.Result" Width="1.5" PointX="9.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FYP_MSModel.Result" Width="1.5" PointX="9.75" PointY="7.875" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.sysdiagram" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.Task" Width="1.5" PointX="7.5" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.Timetable" Width="1.5" PointX="5.25" PointY="13" IsExpanded="true" />
