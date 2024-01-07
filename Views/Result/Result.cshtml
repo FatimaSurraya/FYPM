@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Result";
+    Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+@model List<FYPM.Models.Result>
+
+<a style="margin-left:10px" href="@Url.Action("AddResult")" class="btn btn-primary">Create Result</a>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="wrapper wrapper-content">
+                        <div class="row">
+                            <table class="table  table-hover table-responsive table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Task</th>
+                                        <th>Student</th>
+                                        <th>Task Status</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body" class="scrollable">
+                                    @if (Model.Count() > 0)
+                                    {
+                                        foreach (var result in Model)
+                                        {
+                                            <tr>
+                                                <td>@result.Task.TaskName</td>
+                                                <td>@string.Concat(result.User.FirstName, " ", result.User.LastName, " - ", result.User.CustomId)</td>
+                                                <td>@result.Task.TaskStatus</td>
+                                                <td>@result.Score</td>
+                                                <td>
+                                                    <a class="btn btn-danger delete-button" data-id="@result.ResultId">Delete</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Delete Confirmation -->
+<div id="deleteConfirmationModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Result</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this result?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button id="confirmDeleteButton" type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    var idToDelete;
+
+    $(document).ready(function () {
+        $(".delete-button").on("click", function () {
+            idToDelete = $(this).data("id");
+            $("#deleteConfirmationModal").modal("show");
+        });
+
+        $("#confirmDeleteButton").on("click", function () {
+            $.ajax({
+                url: "@Url.Action("Delete", "Result")" + "?id=" + idToDelete,
+                type: "POST",
+                success: window.location.href = "/Result/ListAllResults"
+            });
+        });
+    });
+</script>

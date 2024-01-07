@@ -1,0 +1,196 @@
+﻿@{
+    ViewBag.Title = "AddResult";
+    Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+@model FYPM.Models.ViewModel.ResultViewModel
+
+<style>
+    .container {
+        margin-top: 30px;
+    }
+
+    .asterisk:after {
+        content: " *";
+        color: red;
+    }
+
+    .col-md-8 {
+        background-color: #f5f5f5;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+        font-size: 28px;
+        text-transform: uppercase;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-size: 16px;
+        color: #555;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .btn-success {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+            <h1>Add Result</h1>
+
+            <div class="form-group">
+                <label for="SelectedAssignedTo" class="asterisk">Select Student:</label>
+                <select class="form-control" id="SelectedAssignedTo" name="SelectedAssignedTo">
+                    <option value="" disabled selected>Select Student</option>
+                    @foreach (var option in Model.AssignedTo)
+                    {
+                        <option value="@option.Values">@option.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="SelectedTask" class="asterisk">Task:</label>
+                <select class="form-control" id="SelectedTask" name="SelectedTask">
+                    <option disabled value="" selected>Select Task</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="TaskStatus">Task Status:</label>
+                <input type="text" id="TaskStatus" name="TaskStatus" class="form-control" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="Score" class="asterisk">Score:</label>
+                <input type="number" id="Score" name="Score" class="form-control" placeholder="Provide 0 to 100. Negative values and more than 100 are not allowed." min="0" max="100">
+            </div>
+
+            <button type="submit" class="btn btn-success" onclick="saveResult()">Submit</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    function loadTasks() {
+        var selectedAssignedTo = $("#SelectedAssignedTo").val();
+        if (selectedAssignedTo) {
+            $.ajax({
+                type: "GET",
+                url: "/Result/GetTasks",
+                data: { assignedToId: selectedAssignedTo },
+                dataType: "json",
+                success: function (data) {
+                    var taskSelect = $("#SelectedTask");
+                    taskSelect.empty();
+                    taskSelect.append($('<option>').val('').text('Select Task'));
+                    $.each(data, function (i, item) {
+                        taskSelect.append($('<option>').val(item.Value).text(item.Text));
+                    });
+                    updateTaskStatus();
+                }
+            });
+        } else {
+            $("#SelectedTask").empty().append($('<option>').val('').text('Select Task'));
+            updateTaskStatus();
+        }
+    }
+
+    function updateTaskStatus() {
+        var selectedTask = $("#SelectedTask").val();
+        if (selectedTask) {
+            $.ajax({
+                type: "GET",
+                url: "/Result/GetTaskStatus",
+                data: { taskId: selectedTask },
+                dataType: "json",
+                success: function (data) {
+                    $("#TaskStatus").val(data.TaskStatus);
+                }
+            });
+        } else {
+            $("#TaskStatus").val('');
+        }
+    }
+
+    function saveResult() {
+        var selectedAssignedTo = $("#SelectedAssignedTo").val();
+        var selectedTask = $("#SelectedTask").val();
+        var score = $("#Score").val();
+        var taskStatus = $("#TaskStatus").val();
+
+        if (!selectedAssignedTo || !selectedTask || !score) {
+            alert("Please provide all details");
+            return;
+        }
+
+        var resultData = {
+            SelectedAssignedTo: selectedAssignedTo,
+            SelectedTask: selectedTask,
+            Score: score,
+            TaskStatus: taskStatus
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Result/SaveResult",
+            data: JSON.stringify(resultData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                if (response === 1) {
+                    window.location.href = "/Result/ListAllResults";
+                } else {
+                    alert("Error saving result.");
+                }
+            },
+            error: function () {
+                alert("An error occurred while saving the result.");
+            }
+        });
+    }
+
+    jQuery(document).ready(function ($) {
+        $('#SelectedAssignedTo').select2();
+        $('#SelectedTask').select2();
+
+        $('#SelectedAssignedTo').change(function () {
+            loadTasks();
+        });
+
+        $('#SelectedTask').change(function () {
+            updateTaskStatus();
+        });
+    });
+</script>

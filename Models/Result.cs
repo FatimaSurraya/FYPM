@@ -16,6 +16,7 @@ namespace FYPM.Models
     {
         public int ResultId { get; set; }
         public int TaskID { get; set; }
+        public int TaskId { get; internal set; }
         public int StudentID { get; set; }
         public int SupervisorID { get; set; }
         public int Score { get; set; }

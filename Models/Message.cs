@@ -14,6 +14,8 @@ namespace FYPM.Models
     
     public partial class Message
     {
+        internal string SenderName;
+
         public int MessageId { get; set; }
         public int SenderId { get; set; }
         public int ReceiverId { get; set; }

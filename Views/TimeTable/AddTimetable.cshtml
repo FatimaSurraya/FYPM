@@ -1,0 +1,145 @@
+﻿@*@{
+    ViewBag.Title = "Add Timetable";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}*@
+
+
+@model FYPM.Models.ViewModel.TimetableViewModel
+
+<style>
+    .container {
+        margin-top: 30px;
+    }
+
+    .asterisk:after {
+        content: " *";
+        color: red;
+    }
+
+    .col-md-8 {
+        background-color: #f5f5f5;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+        font-size: 28px;
+        text-transform: uppercase;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-size: 16px;
+        color: #555;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .btn-success {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+            <h1>Add Timetable</h1>
+
+            <div class="form-group">
+                <label for="Date" class="asterisk">Date:</label>
+                <input type="date" id="Date" name="Date" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="DayOfWeek" class="asterisk">Day of the Week:</label>
+                <input readonly type="text" id="DayOfWeek" name="DayOfWeek" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="Time" class="asterisk">Time:</label>
+                <input type="time" id="Time" name="Time" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="Event" class="asterisk">Event:</label>
+                <input type="text" id="Event" name="Event" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-success" onclick="saveTimetable()">Submit</button>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<script>
+    function updateDayOfWeek() {
+        var selectedDate = new Date($("#Date").val());
+        if (!isNaN(selectedDate.getTime())) {
+            var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var dayOfWeek = daysOfWeek[selectedDate.getDay()];
+            $("#DayOfWeek").val(dayOfWeek);
+        } else {
+            $("#DayOfWeek").val("");
+        }
+    }
+
+    $("#Date").change(updateDayOfWeek);
+
+    function saveTimetable() {
+        var date = $("#Date").val();
+        var dayOfWeek = $("#DayOfWeek").val();
+        var time = $("#Time").val();
+        var event = $("#Event").val();
+
+        if (!date || !dayOfWeek || !time || !event) {
+            alert("Please provide all details");
+            return;
+        }
+
+        var timetableData = {
+            Date: date,
+            DayOfWeek: dayOfWeek,
+            Time: time,
+            Event: event
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Timetable/SaveTimetable",
+            data: JSON.stringify(timetableData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                if (response === 1) {
+                    window.location.href = "/Timetable/ListAllTimetables";
+                } else {
+                    alert("Error saving timetable.");
+                }
+            },
+            error: function () {
+                alert("An error occurred while saving the timetable.");
+            }
+        });
+    }
+</script>

@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Result";
+    Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+@model List<FYPM.Models.Result>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="wrapper wrapper-content">
+                        <div class="row">
+                            <table class="table  table-hover table-responsive table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Task</th>
+                                        <th>Supervisor</th>
+                                        <th>Task Status</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body" class="scrollable">
+                                    @if (Model.Count() > 0)
+                                    {
+                                        foreach (var result in Model)
+                                        {
+                                            <tr>
+                                                <td>@result.Task.TaskName</td>
+                                                <td>@string.Concat(result.User1.FirstName, " ", result.User1.LastName, " - ", result.User1.CustomId)</td>
+                                                <td>@result.Task.TaskStatus</td>
+                                                <td>@result.Score</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
