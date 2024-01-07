@@ -139,23 +139,7 @@ namespace FYPM.Controllers
             return Json(new { success = false, message = "Task not found." });
         }
 
-        public ActionResult RegisterProject(int projectId)
-        {
-            var userId = Convert.ToInt32(Session["UserID"]);
-            var user = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
-            var project = dbContext.ProjectDetails.FirstOrDefault(p => p.ProjectId == projectId);
-
-            var message = new Message
-            {
-                MessageText = user.FirstName + " " + user.LastName + " requested for the " + project.Title + " project.",
-                SenderId = user.UserId,
-                ReceiverId = project.SupervisorID,
-                MessageDate = DateTime.Now
-            };
-            dbContext.Messages.Add(message);
-            dbContext.SaveChanges();
-            return Json(1);
-        }
+       
 
 
 

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FYP_MSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FYP_MSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Meetings">
           <Key>
             <PropertyRef Name="MeetingId" />
@@ -68,6 +68,16 @@
           <Property Name="SupervisorID" Type="int" Nullable="false" />
           <Property Name="Score" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="StudentProjectRequest">
+          <Key>
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="RequestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectId" Type="int" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="RequestTime" Type="datetime" />
+          <Property Name="IsApproved" Type="bit" />
+        </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -118,6 +128,30 @@
           <Property Name="UserTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TypeName" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <Association Name="FK__StudentPr__Proje__440B1D61">
+          <End Role="ProjectDetails" Type="Self.ProjectDetails" Multiplicity="0..1" />
+          <End Role="StudentProjectRequest" Type="Self.StudentProjectRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectDetails">
+              <PropertyRef Name="ProjectId" />
+            </Principal>
+            <Dependent Role="StudentProjectRequest">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentPr__UserI__44FF419A">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="StudentProjectRequest" Type="Self.StudentProjectRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="StudentProjectRequest">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Meetings_Users_Student">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Meetings" Type="Self.Meetings" Multiplicity="*" />
@@ -324,11 +358,20 @@
           <EntitySet Name="ProjectDocuments" EntityType="Self.ProjectDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectList" EntityType="Self.ProjectList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Results" EntityType="Self.Results" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentProjectRequest" EntityType="Self.StudentProjectRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Timetables" EntityType="Self.Timetables" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__StudentPr__Proje__440B1D61" Association="Self.FK__StudentPr__Proje__440B1D61">
+            <End Role="ProjectDetails" EntitySet="ProjectDetails" />
+            <End Role="StudentProjectRequest" EntitySet="StudentProjectRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentPr__UserI__44FF419A" Association="Self.FK__StudentPr__UserI__44FF419A">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="StudentProjectRequest" EntitySet="StudentProjectRequest" />
+          </AssociationSet>
           <AssociationSet Name="FK_Meetings_Users_Student" Association="Self.FK_Meetings_Users_Student">
             <End Role="Users" EntitySet="Users" />
             <End Role="Meetings" EntitySet="Meetings" />
@@ -382,8 +425,7 @@
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FYP_MSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -427,6 +469,7 @@
           <NavigationProperty Name="User" Relationship="Self.FK_ProjectDetail_Users" FromRole="ProjectDetails" ToRole="Users" />
           <NavigationProperty Name="ProjectDocuments" Relationship="Self.FK_ProjectDocuments_ProjectDetails" FromRole="ProjectDetails" ToRole="ProjectDocuments" />
           <NavigationProperty Name="Tasks" Relationship="Self.FK_Tasks_ProjectDetails" FromRole="ProjectDetails" ToRole="Tasks" />
+          <NavigationProperty Name="StudentProjectRequests" Relationship="FYP_MSModel.FK__StudentPr__Proje__440B1D61" FromRole="ProjectDetail" ToRole="StudentProjectRequest" />
         </EntityType>
         <EntityType Name="ProjectDocument">
           <Key>
@@ -517,6 +560,7 @@
           <NavigationProperty Name="Tasks" Relationship="Self.FK_Tasks_Users" FromRole="Users" ToRole="Tasks" />
           <NavigationProperty Name="Timetables" Relationship="Self.FK_Timetables_Users" FromRole="Users" ToRole="Timetables" />
           <NavigationProperty Name="UserType" Relationship="Self.FK_Users_UserTypes" FromRole="Users" ToRole="UserTypes" />
+          <NavigationProperty Name="StudentProjectRequests" Relationship="FYP_MSModel.FK__StudentPr__UserI__44FF419A" FromRole="User" ToRole="StudentProjectRequest" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -788,6 +832,15 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="StudentProjectRequests" EntityType="FYP_MSModel.StudentProjectRequest" />
+          <AssociationSet Name="FK__StudentPr__Proje__440B1D61" Association="FYP_MSModel.FK__StudentPr__Proje__440B1D61">
+            <End Role="ProjectDetail" EntitySet="ProjectDetails" />
+            <End Role="StudentProjectRequest" EntitySet="StudentProjectRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentPr__UserI__44FF419A" Association="FYP_MSModel.FK__StudentPr__UserI__44FF419A">
+            <End Role="User" EntitySet="Users" />
+            <End Role="StudentProjectRequest" EntitySet="StudentProjectRequests" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -800,6 +853,42 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="StudentProjectRequest">
+          <Key>
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="RequestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="RequestTime" Type="DateTime" Precision="3" />
+          <Property Name="IsApproved" Type="Boolean" />
+          <NavigationProperty Name="ProjectDetail" Relationship="FYP_MSModel.FK__StudentPr__Proje__440B1D61" FromRole="StudentProjectRequest" ToRole="ProjectDetail" />
+          <NavigationProperty Name="User" Relationship="FYP_MSModel.FK__StudentPr__UserI__44FF419A" FromRole="StudentProjectRequest" ToRole="User" />
+        </EntityType>
+        <Association Name="FK__StudentPr__Proje__440B1D61">
+          <End Type="FYP_MSModel.ProjectDetail" Role="ProjectDetail" Multiplicity="0..1" />
+          <End Type="FYP_MSModel.StudentProjectRequest" Role="StudentProjectRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectDetail">
+              <PropertyRef Name="ProjectId" />
+            </Principal>
+            <Dependent Role="StudentProjectRequest">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentPr__UserI__44FF419A">
+          <End Type="FYP_MSModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="FYP_MSModel.StudentProjectRequest" Role="StudentProjectRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="StudentProjectRequest">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -954,6 +1043,17 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="FYP_MSModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="FYP_MSModel.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="StudentProjectRequests">
+            <EntityTypeMapping TypeName="FYP_MSModel.StudentProjectRequest">
+              <MappingFragment StoreEntitySet="StudentProjectRequest">
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="RequestTime" ColumnName="RequestTime" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

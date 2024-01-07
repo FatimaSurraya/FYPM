@@ -3,6 +3,7 @@
     ViewBag.Title = "StudentProjectGrid";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+}
 
 <h2 style="margin-left:10px">List of Projects offered</h2>
 
@@ -18,7 +19,7 @@
                                     <tr>
                                         <th>Title</th>
                                         <th>Project Description</th>
-                                        <th>Total Marks</th>                                       
+                                        <th>Total Marks</th>
                                         <th>Students Allowed</th>
                                         <th>Project Request</th>
                                     </tr>
@@ -56,7 +57,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Project/RegisterProject",
+                url: "/Project/ProjectRequest",
                 data: { projectId: projectId },
                 success: function (response) {
                     if (response == 1) {

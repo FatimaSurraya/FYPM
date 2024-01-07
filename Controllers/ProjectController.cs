@@ -8,13 +8,14 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using Ionic.Zip;
+using FYPM.Models.ViewModel;
 
 namespace FYPM.Controllers
 {
     public class ProjectController : Controller                         
     {
         FYP_MSEntities1 dbContext = new FYP_MSEntities1();
-        // GET: UploadProject
+       
         public ActionResult UploadProject()
         {
             return View();
@@ -249,7 +250,7 @@ namespace FYPM.Controllers
             return Json(new { success = false, message = "Task not found." });
         }
 
-        public ActionResult RegisterProject(int projectId)
+        public ActionResult ProjectRequest(int projectId)
         {
             var userId = Convert.ToInt32(Session["UserID"]);
             var user = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
@@ -269,8 +270,16 @@ namespace FYPM.Controllers
 
         #endregion
 
-        
+        //Requests approvals 
 
+        public ActionResult ProjectRequests()
+        {
+            
+
+            return View();
+        }
+
+       
     }
 
 

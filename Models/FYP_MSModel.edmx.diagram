@@ -29,6 +29,9 @@
         <AssociationConnector Association="FYP_MSModel.FK_Tasks_Users" ManuallyRouted="false" />
         <AssociationConnector Association="FYP_MSModel.FK_Timetables_Users" ManuallyRouted="false" />
         <AssociationConnector Association="FYP_MSModel.FK_Users_UserTypes" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FYP_MSModel.StudentProjectRequest" Width="1.5" PointX="10.5" PointY="11.375" />
+        <AssociationConnector Association="FYP_MSModel.FK__StudentPr__Proje__440B1D61" />
+        <AssociationConnector Association="FYP_MSModel.FK__StudentPr__UserI__44FF419A" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

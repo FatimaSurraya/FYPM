@@ -19,6 +19,7 @@ namespace FYPM.Models
         {
             this.ProjectDocuments = new HashSet<ProjectDocument>();
             this.Tasks = new HashSet<Task>();
+            this.StudentProjectRequests = new HashSet<StudentProjectRequest>();
         }
     
         public int ProjectId { get; set; }
@@ -36,5 +37,7 @@ namespace FYPM.Models
         public virtual ICollection<ProjectDocument> ProjectDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task> Tasks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StudentProjectRequest> StudentProjectRequests { get; set; }
     }
 }

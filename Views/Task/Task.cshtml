@@ -101,7 +101,7 @@
             $.ajax({
                 url: "@Url.Action("DeleteTask", "Project")" + "?id=" + idToDelete,
                 type: "POST",
-                success: window.location.href = "/Project/ListAllTasks"
+                success: window.location.href = "/Task/ListAllTasks"
             });
         });
     });
