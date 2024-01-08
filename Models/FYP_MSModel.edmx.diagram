@@ -9,7 +9,7 @@
         <EntityTypeShape EntityType="FYP_MSModel.Message" Width="1.5" PointX="5.25" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.ProjectDetail" Width="1.5" PointX="5.25" PointY="9" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.ProjectDocument" Width="1.5" PointX="7.5" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="FYP_MSModel.ProjectList" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FYP_MSModel.ProjectList" Width="1.5" PointX="2.5" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.Result" Width="1.5" PointX="9.75" PointY="7.875" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.sysdiagram" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.Task" Width="1.5" PointX="7.5" PointY="5.875" IsExpanded="true" />
@@ -29,7 +29,7 @@
         <AssociationConnector Association="FYP_MSModel.FK_Tasks_Users" ManuallyRouted="false" />
         <AssociationConnector Association="FYP_MSModel.FK_Timetables_Users" ManuallyRouted="false" />
         <AssociationConnector Association="FYP_MSModel.FK_Users_UserTypes" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="FYP_MSModel.StudentProjectRequest" Width="1.5" PointX="10.5" PointY="11.375" />
+        <EntityTypeShape EntityType="FYP_MSModel.StudentProjectRequest" Width="1.5" PointX="10.5" PointY="11.375" IsExpanded="true" />
         <AssociationConnector Association="FYP_MSModel.FK__StudentPr__Proje__440B1D61" />
         <AssociationConnector Association="FYP_MSModel.FK__StudentPr__UserI__44FF419A" />
       </Diagram>

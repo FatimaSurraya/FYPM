@@ -191,7 +191,7 @@ namespace FYPM.Controllers
         #region student
         public ActionResult ListAllStudentProjects()
         {
-            return View("StudentProjectGrid", dbContext.ProjectDetails.ToList());
+            return View("StudentProjectGrid", dbContext.ProjectLists.ToList());
         }
 
         public ActionResult ShowAllTasks()
