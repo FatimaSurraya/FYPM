@@ -1,1 +1,84 @@
-﻿
+﻿@{
+    ViewBag.Title = "Project Requests Approval";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Project Requests Approval</h2>
+
+<div class="container">
+    
+    <div id="projectRequests"></div>
+</div>
+
+<script>
+    // Function to fetch and display project requests
+    function displayProjectRequests() {
+        $.ajax({
+            url: '/Supervisor/GetProjectRequests', // Endpoint to fetch requests
+            method: 'GET',
+            success: function (data) {
+                // Display project requests data in HTML
+                var requestsHtml = '';
+
+                // Loop through data and create HTML structure
+                data.forEach(function (request) {
+                    requestsHtml += `<div class="request-item">`;
+                    requestsHtml += `<p>Request ID: ${request.RequestId}</p>`;
+                    requestsHtml += `<p>Project ID: ${request.ProjectId}</p>`;
+                    // Display other request details as needed
+                    requestsHtml += `<button onclick="approveRequest(${request.RequestId})">Approve</button>`;
+                    requestsHtml += `<button onclick="rejectRequest(${request.RequestId})">Reject</button>`;
+                    requestsHtml += `</div>`;
+                });
+
+                // Display requests HTML in the specified element
+                $('#projectRequests').html(requestsHtml);
+            }
+        });
+    }
+
+    // Function to approve a request
+    function approveRequest(requestId) {
+        // AJAX call to approve the request
+        // Send the requestId to the server for approval
+        $.ajax({
+            url: '/Project/ApproveRequest',
+            method: 'POST',
+            data: { requestId: requestId },
+            success: function (response) {
+                // Handle success response
+                if (response === 'success') {
+                    // Refresh the displayed requests after approval
+                    displayProjectRequests();
+                    // Optionally, show a success message
+                    alert("Request approved successfully.");
+                }
+            }
+        });
+    }
+
+    // Function to reject a request
+    function rejectRequest(requestId) {
+        // Similar AJAX call as above but for rejection
+        // Send the requestId to the server for rejection
+        $.ajax({
+            url: '/Project/RejectRequest',
+            method: 'POST',
+            data: { requestId: requestId },
+            success: function (response) {
+                // Handle success response
+                if (response === 'success') {
+                    // Refresh the displayed requests after rejection
+                    displayProjectRequests();
+                    // Optionally, show a success message
+                    alert("Request rejected.");
+                }
+            }
+        });
+    }
+
+    // Call function to initially display project requests on page load
+    $(document).ready(function () {
+        displayProjectRequests();
+    });
+</script>
