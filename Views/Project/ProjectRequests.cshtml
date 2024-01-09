@@ -2,83 +2,99 @@
     ViewBag.Title = "Project Requests Approval";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@model List<FYPM.Models.StudentProjectRequest>
 <h2>Project Requests Approval</h2>
 
 <div class="container">
-    
-    <div id="projectRequests"></div>
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+
+            <div class="form-group">
+                <label for="MenuTitle"> RequestId</label>
+                <input type="text" class="form-control" id="Request" required>
+            </div>
+
+            <div class="form-group">
+                <label for="MenuTitle"> ProjectId</label>
+                <input type="text" class="form-control" id="Project" required>
+            </div>
+
+            <div class="form-group">
+                <label for="MenuTitle"> UserId</label>
+                <input type="text" class="form-control" id="User" required>
+            </div>
+
+            <div class="form-group">
+                <label for="MenuTitle"> RequestTime</label>
+                <input type="text" class="form-control" id="RequestTime" required>
+            </div>
+
+            <div class="form-group">
+                <label for="MenuTitle"> IsApproved</label>
+                <input type="text" class="form-control" id="IsApproved" required>
+            </div>
+
+            @*<div class="form-group">
+                    <button type="submit" onclick="submitProject()" class="btn-success btn-sm" value="Upload">Upload Project</button>
+                </div>*@
+
+        </div>
+
+    </div>
+
 </div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<!-- Include Select2 CSS -->
+<link href="~/Content/css/plugins/select2/select2.min.css" rel="stylesheet" />
+
+<!-- Include Select2 JS -->
+<script src="~/Content/js/plugins/select2/select2.full.min.js"></script>
 
 <script>
-    // Function to fetch and display project requests
-    function displayProjectRequests() {
+    function approveProjectRequest() {
+        var requestId = document.getElementById("Request").value;
+        var projectId = document.getElementById("Project").value;
+        var userId = document.getElementById("User").value;
+        var requestTime = document.getElementById("RequestTime").value;
+        var isApproved = document.getElementById("IsApproved").value; // Assuming 1 for approved, 0 for not approved
+
+        // Validate required fields
+        if (!requestId || !projectId || !userId || !requestTime || !isApproved) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
+        // Validate IsApproved value (ensure it's 1 or 0)
+        if (isApproved !== "1" && isApproved !== "0") {
+            alert("Please enter a valid IsApproved value (1 for approved, 0 for not approved).");
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append('RequestId', requestId);
+        formData.append('ProjectId', projectId);
+        formData.append('UserId', userId);
+        formData.append('RequestTime', requestTime);
+        formData.append('IsApproved', isApproved);
+
         $.ajax({
-            url: '/Supervisor/GetProjectRequests', // Endpoint to fetch requests
-            method: 'GET',
-            success: function (data) {
-                // Display project requests data in HTML
-                var requestsHtml = '';
-
-                // Loop through data and create HTML structure
-                data.forEach(function (request) {
-                    requestsHtml += `<div class="request-item">`;
-                    requestsHtml += `<p>Request ID: ${request.RequestId}</p>`;
-                    requestsHtml += `<p>Project ID: ${request.ProjectId}</p>`;
-                    // Display other request details as needed
-                    requestsHtml += `<button onclick="approveRequest(${request.RequestId})">Approve</button>`;
-                    requestsHtml += `<button onclick="rejectRequest(${request.RequestId})">Reject</button>`;
-                    requestsHtml += `</div>`;
-                });
-
-                // Display requests HTML in the specified element
-                $('#projectRequests').html(requestsHtml);
-            }
-        });
-    }
-
-    // Function to approve a request
-    function approveRequest(requestId) {
-        // AJAX call to approve the request
-        // Send the requestId to the server for approval
-        $.ajax({
-            url: '/Project/ApproveRequest',
-            method: 'POST',
-            data: { requestId: requestId },
-            success: function (response) {
-                // Handle success response
-                if (response === 'success') {
-                    // Refresh the displayed requests after approval
-                    displayProjectRequests();
-                    // Optionally, show a success message
-                    alert("Request approved successfully.");
+            url: '/Project/ProjectRequests', // Assuming this is the correct endpoint for approval
+            method: 'post',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (obj) {
+                if (obj == 1) { // Assuming 1 indicates successful approval
+                    alert("Project Request Approved Successfully");
+                    window.location.href = '/Project/ProjectRequests'; // Redirect to a list of requests
+                } else {
+                    alert("There was an error approving the request. Please try again.");
                 }
             }
         });
     }
-
-    // Function to reject a request
-    function rejectRequest(requestId) {
-        // Similar AJAX call as above but for rejection
-        // Send the requestId to the server for rejection
-        $.ajax({
-            url: '/Project/RejectRequest',
-            method: 'POST',
-            data: { requestId: requestId },
-            success: function (response) {
-                // Handle success response
-                if (response === 'success') {
-                    // Refresh the displayed requests after rejection
-                    displayProjectRequests();
-                    // Optionally, show a success message
-                    alert("Request rejected.");
-                }
-            }
-        });
-    }
-
-    // Call function to initially display project requests on page load
-    $(document).ready(function () {
-        displayProjectRequests();
-    });
 </script>

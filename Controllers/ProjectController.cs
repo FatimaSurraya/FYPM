@@ -191,7 +191,20 @@ namespace FYPM.Controllers
         #region student
         public ActionResult ListAllStudentProjects()
         {
-            return View("StudentProjectGrid", dbContext.ProjectLists.ToList());
+            //var projects = dbContext.ProjectLists.ToList();
+            var projects = dbContext.ProjectDetails.ToList();
+            var projectDocuments = dbContext.ProjectDocuments.ToList();
+            var projectsWithDocuments = projects.GroupJoin(
+       projectDocuments,
+       project => project.ProjectId,
+       doc => doc.ProjectId,
+       (project, documents) =>
+       {
+           project.ProjectDocuments = documents.ToList();
+           return project;
+       }
+   ).ToList();
+             return View("StudentProjectGrid", projects);
         }
 
         public ActionResult ShowAllTasks()
@@ -272,14 +285,29 @@ namespace FYPM.Controllers
 
         //Requests approvals 
 
-        public ActionResult ProjectRequests()
+
+        //Project Requests
+        public ActionResult RegisterProject(int projectId)
         {
-            
+            var userId = Convert.ToInt32(Session["UserID"]);
+            var user = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            var project = dbContext.ProjectDetails.FirstOrDefault(p => p.ProjectId == projectId);
 
-            return View();
+            var message = new Message
+            {
+                MessageText = user.FirstName + " " + user.LastName + " requested for the " + project.Title + " project.",
+                SenderId = user.UserId,
+                ReceiverId = project.SupervisorID,
+                MessageDate = DateTime.Now
+            };
+            dbContext.Messages.Add(message);
+            dbContext.SaveChanges();
+            return Json(1);
         }
+          
 
-       
+
+
     }
 
 
