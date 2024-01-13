@@ -191,21 +191,25 @@ namespace FYPM.Controllers
         #region student
         public ActionResult ListAllStudentProjects()
         {
-            //var projects = dbContext.ProjectLists.ToList();
             var projects = dbContext.ProjectDetails.ToList();
-            var projectDocuments = dbContext.ProjectDocuments.ToList();
-            var projectsWithDocuments = projects.GroupJoin(
-       projectDocuments,
-       project => project.ProjectId,
-       doc => doc.ProjectId,
-       (project, documents) =>
-       {
-           project.ProjectDocuments = documents.ToList();
-           return project;
-       }
-   ).ToList();
-             return View("StudentProjectGrid", projects);
+
+            foreach (var project in projects)
+            {
+                project.ProjectDocuments = new List<ProjectDocument>();
+              var documents = dbContext.ProjectDocuments
+                    .Where(x => x.ProjectId == project.ProjectId)
+                    .ToList();
+                foreach(var document in documents)
+                {
+                    project.ProjectDocuments.Clear();
+                    project.ProjectDocuments.Add(document);
+
+                }
+            }
+
+            return View("StudentProjectGrid", projects);
         }
+
 
         public ActionResult ShowAllTasks()
         {
@@ -241,7 +245,7 @@ namespace FYPM.Controllers
                         zipFile.Save(zipStream);
                     }
 
-                    string zipFileName = "task_documents.zip";
+                    string zipFileName = "project_files.zip";
 
                     return File(zipStream.ToArray(), "application/zip", zipFileName);
                 }
@@ -284,7 +288,17 @@ namespace FYPM.Controllers
         #endregion
 
         //Requests approvals 
-
+        public ActionResult ProjectRequests(int requestId, bool isApproved)
+        {
+            var request = dbContext.StudentProjectRequests.FirstOrDefault(u => u.RequestId == requestId);
+            if (request != null)
+            {
+                request.IsApproved = isApproved;
+                dbContext.SaveChanges();
+                return Json(1);
+            }
+            return Json(0);
+        }
 
         //Project Requests
         public ActionResult RegisterProject(int projectId)

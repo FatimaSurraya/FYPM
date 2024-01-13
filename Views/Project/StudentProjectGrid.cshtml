@@ -29,14 +29,17 @@
                                     {
                                         <tr>
                                             <td>@projectDetail.Title</td>
-                                            <td><iframe src="@projectDetail.ProjectDocuments" width="100%" height="500px"></iframe></td>
+                                            <td>
+                                                <a href="/Project/DownloadDocuments?projectId=@projectDetail.ProjectId"  target="_blank">Project File</a>
+                                            </td>
                                             <td>100</td>
                                             <td>@projectDetail.StudentsAllowed</td>
                                             <td>
-                                                <a data-project-id="@projectDetail.ProjectId" class="btn btn-success register-button">Project Request</a>
+                                                <a data-project-id="@projectDetail.ProjectId" onclick="SendProjectRequest();" class="btn btn-success register-button">Project Request</a>
                                             </td>
                                         </tr>
                                     }
+
                                 </tbody>
                             </table>
                         </div>
@@ -70,6 +73,31 @@
                     alert("An error occurred while registering the project.");
                 }
             });
+        });
+    });
+
+    function SendProjectRequest(projectId) {
+        $.ajax({
+            type: "POST",
+            url: "/Project/RegisterProject",
+            data: { projectId: projectId },
+            success: function (response) {
+                if (response === 1) {
+                    alert("Project request sent to supervisor!");
+                } else {
+                    alert("Failed to send project request. " + response.message);
+                }
+            },
+            error: function () {
+                alert("An error occurred while registering the project.");
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $(".register-button").click(function () {
+            var projectId = $(this).data("project-id");
+            SendProjectRequest(projectId);
         });
     });
 </script>

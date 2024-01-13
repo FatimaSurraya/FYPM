@@ -133,6 +133,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MeetingController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\ResultController.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Models\UserType.cs">
       <DependentUpon>FYP_MSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModel\MeetingViewModel.cs" />
     <Compile Include="Models\ViewModel\MessageViewModel.cs" />
     <Compile Include="Models\ViewModel\ProjectSupervisor.cs" />
     <Compile Include="Models\ViewModel\ResultViewModel.cs" />
@@ -294,6 +296,9 @@
     <Content Include="Views\Result\AddResult.cshtml" />
     <Content Include="Views\Result\Result.cshtml" />
     <Content Include="Views\Result\StudentResult.cshtml" />
+    <Content Include="Views\Meeting\SendMeetingUpdate.cshtml" />
+    <Content Include="Views\Meeting\Meetings.cshtml" />
+    <Content Include="Views\Meeting\AddMeetings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
