@@ -73,12 +73,10 @@ namespace FYPM.Controllers
                     }
                 }
 
-                return Json(new { success = true });
+                return Json(1);
             }
             catch (Exception ex)
             {
-                // Log the exception for debugging purposes
-                // Handle and return an appropriate error response
                 return Json(new { success = false, error = "An error occurred while processing the request." });
             }
         }
@@ -105,6 +103,7 @@ namespace FYPM.Controllers
 
             return View(projectDetail);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditProject(ProjectDetail projectDetail, List<HttpPostedFileBase> UploadDocuments)
@@ -176,6 +175,22 @@ namespace FYPM.Controllers
         }
 
 
+        public ActionResult DeleteProject(int id)
+        {
+            ProjectDetail projectDetail = dbContext.ProjectDetails.FirstOrDefault(x => x.ProjectId == id);
+
+            if (projectDetail != null)
+            {
+                var documents = dbContext.ProjectDocuments.Where(x=>x.ProjectId == id).ToList();
+                documents.ForEach(x => dbContext.ProjectDocuments.Remove(x));
+                dbContext.SaveChanges();
+                dbContext.ProjectDetails.Remove(projectDetail);
+                dbContext.SaveChanges();
+            }
+            return RedirectToAction("ListAllProjects");
+
+        }
+
         public ActionResult DownloadExistingDocument(string documentFileName)
         {
             string documentPath = Server.MapPath("~/Uploads/" + documentFileName);
@@ -191,21 +206,25 @@ namespace FYPM.Controllers
         #region student
         public ActionResult ListAllStudentProjects()
         {
-            //var projects = dbContext.ProjectLists.ToList();
             var projects = dbContext.ProjectDetails.ToList();
-            var projectDocuments = dbContext.ProjectDocuments.ToList();
-            var projectsWithDocuments = projects.GroupJoin(
-       projectDocuments,
-       project => project.ProjectId,
-       doc => doc.ProjectId,
-       (project, documents) =>
-       {
-           project.ProjectDocuments = documents.ToList();
-           return project;
-       }
-   ).ToList();
-             return View("StudentProjectGrid", projects);
+
+            foreach (var project in projects)
+            {
+                project.ProjectDocuments = new List<ProjectDocument>();
+              var documents = dbContext.ProjectDocuments
+                    .Where(x => x.ProjectId == project.ProjectId)
+                    .ToList();
+                foreach(var document in documents)
+                {
+                    project.ProjectDocuments.Clear();
+                    project.ProjectDocuments.Add(document);
+
+                }
+            }
+
+            return View("StudentProjectGrid", projects);
         }
+
 
         public ActionResult ShowAllTasks()
         {
@@ -241,7 +260,7 @@ namespace FYPM.Controllers
                         zipFile.Save(zipStream);
                     }
 
-                    string zipFileName = "task_documents.zip";
+                    string zipFileName = "project_files.zip";
 
                     return File(zipStream.ToArray(), "application/zip", zipFileName);
                 }
@@ -284,7 +303,17 @@ namespace FYPM.Controllers
         #endregion
 
         //Requests approvals 
-
+        public ActionResult ProjectRequests(int requestId, bool isApproved)
+        {
+            var request = dbContext.StudentProjectRequests.FirstOrDefault(u => u.RequestId == requestId);
+            if (request != null)
+            {
+                request.IsApproved = isApproved;
+                dbContext.SaveChanges();
+                return Json(1);
+            }
+            return Json(0);
+        }
 
         //Project Requests
         public ActionResult RegisterProject(int projectId)

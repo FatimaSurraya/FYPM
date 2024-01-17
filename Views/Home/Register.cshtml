@@ -23,9 +23,11 @@
     .form-label {
         font-weight: bold;
     }
+
     .bold-label {
         font-weight: bold;
     }
+
     .btn-primary {
         background-color: #007bff;
         border: none;
@@ -47,77 +49,78 @@
         padding: 10px;
         width: 100%;
     }
+
+   select.form-control:not([size]):not([multiple]) {
+       height: calc(2.55rem + 2px) !important;
+   }
 </style>
 
 <body>
     <div class="container mt-5">
         <h1 style="font-family: 'Arial', sans-serif; text-align: center;">Final Year Project Management System</h1>
     </div>
-    <form id="account_form" class="row g-3">
 
-        <div class="col-md-6">
-            <label for="inputEmail4" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="inputEmail4">
-        </div>
-        <div class="col-md-6">
-            <label for="inputPassword4" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="inputPassword4">
-        </div>
-        <div class="col-12">
-            <label for="inputAddress" class="form-label">Email</label>
-            <input type="email" id="login_email" class="form-control">
-        </div>
-        <div class="col-12">
-            <label class="bold-label asterisk">User Type</label>
-            <select class="form-control" id="login_usertype">
-                <option value="1">Admin</option>
-                <option value="2">Supervisor</option>
-                <option value="3">Student</option>
-            </select>
-        </div>
-        @*<div hidden id="studentId" class="form-group">
-            <label class="bold-label asterisk">Student Id</label>
-            <input type="text" class="form-control" id="stid">
-        </div>*@
-        @*<div class="col-12">
-            <label for="login_id" class="form-label">User Id</label>
-            <input type="text" class="form-control" id="login_id">
-        </div>*@
-        <div class="col-12">
-            <label class="bold-label asterisk">Password</label>
-            <input type="password" id="login_password" class="form-control" textMode="Password">
-        </div>
-        @*<div class="col-12">
-            <label class="bold-label asterisk">Skype Name</label>
-            <input type="text" id="login_skypeName" class="form-control">
-        </div>*@
-        @*<div class="form-group">
-            <label class="bold-label" for="UploadDocument">Upload Documents:</label>
-            <input type="file" id="UploadDocument" class="form-control-file" multiple>
-        </div>*@
-        <br />
-        @*<div class="col-12">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck">
-                <label class="form-check-label" for="gridCheck">Check me out</label>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="account_form" class="row g-3">
+                            <div class="container">
+                                <div class="col-md-12 mb-2">
+                                    <a Class="btn-sm btn-warning" href="/Home/Login">
+                                        Already have account? Click here to login!
+                                    </a>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="d-flex">
+                                        <div class="col-md-6">
+                                            <label for="inputEmail4" class="form-label">First Name</label>
+                                            <input type="text" class="form-control" id="register_firstname">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="inputPassword4" class="form-label">Last Name</label>
+                                            <input type="text" class="form-control" id="register_lastname">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="inputAddress" class="form-label">Email</label>
+                                        <input type="email" id="register_email" class="form-control">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="bold-label asterisk">User Type</label>
+                                        <select class="form-control" id="register_usertype">
+                                            <option value="1">Admin</option>
+                                            <option value="2">Supervisor</option>
+                                            <option value="3">Student</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <label class="bold-label asterisk">Password</label>
+                                        <input type="password" id="register_password" class="form-control">
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <button id="btn_register" type="button" class="btn btn-warning btn-block">Register</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>*@
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary">Sign in</button>
         </div>
-    </form>
-
+    </div>
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script>
-        ///// login click
-        $("#btn_login").click(function () {
-            var FirstName = $("#login_first_name").val();
-            var LastName = $("#login_last_name").val();
-            var Email = $("#login_email").val();
-            var Password = $("#login_password").val();
-            var UserType = $("#login_usertype").val();
-            
+
+        $("#btn_register").click(function () {
+            var FirstName = $("#register_firstname").val();
+            var LastName = $("#register_lastname").val();
+            var Email = $("#register_email").val();
+            var Password = $("#register_password").val();
+            var UserType = $("#register_usertype").val();
+
 
             if (!FirstName) {
                 alert("Please enter First Name");
@@ -131,23 +134,11 @@
                 alert("Please enter Email");
                 return;
             }
-            //if (!StudentId) {
-            //    alert("Please enter User Id");
-            //    return;
-            //}
-            //if (!Address) {
-            //    alert("Please enter Address");
-            //    return;
-            //}
 
             if (!Password) {
                 alert("Please enter Password");
                 return;
             }
-            //if (!SkypeName) {
-            //    alert("Please enter SkypeName");
-            //    return;
-            //}
 
             $.ajax({
                 url: '/Home/Register',
@@ -158,9 +149,9 @@
                     'LastName': LastName,
                     'Password': Password,
                     'Email': Email,
-                   /* 'Address': Address,*/
+                    /* 'Address': Address,*/
                     'UserTypeId': UserType
-                   
+
                 },
                 success: Registersuccess
             });
@@ -183,17 +174,6 @@
                 return;
             }
         }
-
-
-
-        //$("#login_usertype").change(function () {
-        //    var UserType = $(this).val();
-        //    if (UserType == "3") {
-        //        $("#studentId").show();
-        //    } else {
-        //        $("#studentId").hide();
-        //    }
-        //});
 
     </script>
 </body>

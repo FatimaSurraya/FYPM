@@ -3,7 +3,9 @@
     ViewBag.Title = "StudentTask";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model FYPM.Models.ViewModel.TaskViewModel
+@model List<FYPM.Models.Task>
+
+
 <style>
     /* Define a custom class for the select element */
     .custom-select {
@@ -101,7 +103,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Project/UpdateTaskStatus",
+                url: "/Task/UpdateTaskStatus",
                 data: { taskId: taskId, studentId: studentId, newStatus: newStatus },
                 success: function (response) {
                     if (response.success) {

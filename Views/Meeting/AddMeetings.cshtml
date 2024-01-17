@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "AddMeeting";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model FYPM.Models.ViewModel.MeetingViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+
+            <div class="form-group">
+                <label for="SelectedAssignedTo">Assign To:</label>
+                <select class="form-control" id="SelectedAssignedTo" multiple="multiple" name="SelectedAssignedTo">
+                    @foreach (var option in Model.AssignedTo)
+                    {
+                        <option value="@option.Values">@option.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="DueDate">Scheduled Date:</label>
+                <input type="date" id="datepicker" name="datepicker" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="MeetingType">Meeting Type:</label>
+                <select id="MeetingType" class="form-control">
+                    <option value="Physical">Physical</option>
+                    <option value="Online">Online</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success" onclick="scheduleMeeting()">Schedule Meeting</button>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    function scheduleMeeting() {
+        var selectedAssignedTo = $("#SelectedAssignedTo").val();
+        var scheduledDate = $("#datepicker").val();
+        var meetingType = $("#MeetingType").val();
+
+        var meetingData = {
+            SelectedAssignedTo: selectedAssignedTo,
+            ScheduledDate: scheduledDate,
+            MeetingType: meetingType
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Meeting/SaveMeeting",
+            data: JSON.stringify(meetingData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: MeetingSaved
+        });
+
+        function MeetingSaved(response) {
+            if (response == 1) {
+                window.location.href = "/Meeting/ListAllMeetings";
+            }
+        }
+    }
+
+    jQuery(document).ready(function ($) {
+        $('#SelectedAssignedTo').select2();
+    });
+</script>

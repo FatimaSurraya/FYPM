@@ -65,14 +65,8 @@
 </div>
 
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/bootstrap.min.js"></script>
-
-<!-- Include Select2 CSS -->
-<link href="~/Content/css/plugins/select2/select2.min.css" rel="stylesheet" />
-
-<!-- Include Select2 JS -->
-<script src="~/Content/js/plugins/select2/select2.full.min.js"></script>
 
 <script>
 
@@ -122,7 +116,7 @@
             processData: false,
             contentType: false,
             success: function (obj) {
-                if (obj == 1) {
+                if (obj == "1") {
                     alert("New Project Record Saved Successfully");
                     window.location.href = '/Project/ListAllProjects';
                 }

@@ -7,7 +7,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
 
-    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
 
@@ -66,77 +66,84 @@
     <div class="container mt-5">
         <h1 style="font-family: 'Arial', sans-serif; text-align: center;">Final Year Project Management System</h1>
     </div>
-
-    <form id="account_form">
-        <div class="container">
+    <div class="container">
+        <div class="row justify-content-center">
             <div class="col-md-6">
-                <a Class="btn-sm btn-warning" href="/Home/Register">
-                    Not already registered? Click here!
-                </a>
+                <div class="card">
+                    <div class="card-body">
+                        <form id="account_form">
+                            <div class="container">
+                                <div class="col-md-12 mb-2">
+                                    <a Class="btn-sm btn-warning" href="/Home/Register">
+                                        Do not have an account? No Problem, Click here to register!
+                                    </a>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="well">
+                                        <h4>Login here.</h4>
+                                        <div id="alert"></div>
+                                        <label>Username</label>
+                                        <input type="text" ID="login_user_name" Class="form-control">
+                                        <label>Password</label>
+                                        <input type="password" ID="login_password" Class="form-control" TextMode="Password">
+                                        <br />
+                                        <input type="button" ID="btn_login" Text="LOGIN" Class="btn btn-warning btn-block" value="Login">
+
+                                        <Label ID="status"></Label>
+
+                                    </div>
+                                </div>
 
 
-            </div>
-            <div class="col-md-6">
-                <div class="well">
-                    <h4>Login here.</h4>
-                    <div id="alert"></div>
-                    <label>Username</label>
-                    <input type="text" ID="login_user_name" Class="form-control">
-                    <label>Password</label>
-                    <input type="password" ID="login_password" Class="form-control" TextMode="Password">
-                    <br />
-                    <input type="button" ID="btn_login" Text="LOGIN" Class="btn btn-warning btn-block" value="Login">
-
-                    <Label ID="status"></Label>
-
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-
-
         </div>
-    </form>
-    <script>
-        $("#btn_login").click(function () {
-            var username = $("#login_user_name").val();
-            var password = $("#login_password").val();
+    </div>
+        <script>
+            $("#btn_login").click(function () {
+                var username = $("#login_user_name").val();
+                var password = $("#login_password").val();
 
-            if (!username) {
-                alert("Please Enter Username")
-                return;
-            }
+                if (!username) {
+                    alert("Please Enter Username")
+                    return;
+                }
 
-            if (!password) {
-                alert("Please Enter Password")
-                return;
-            }
+                if (!password) {
+                    alert("Please Enter Password")
+                    return;
+                }
 
-            $.ajax({
-                url: '/Home/Login',
-                method: 'post',
-                traditional: true,
-                data: { 'userName': username, 'password': password },
-                success: Loginsuccess
+                $.ajax({
+                    url: '/Home/Login',
+                    method: 'post',
+                    traditional: true,
+                    data: { 'userName': username, 'password': password },
+                    success: Loginsuccess
+                });
+
             });
 
-        });
+            function Loginsuccess(response) {
 
-        function Loginsuccess(response) {
+                if (response == 1) {
+                    window.location.href = "/Users/UsersDetail";
+                }
+                if (response == 2) {
+                    window.location.href = "/Project/ListAllProjects";
+                }
+                if (response == 3) {
+                    window.location.href = "/Project/ListAllStudentProjects";
+                }
+                if (response == -1) {
+                    alert("Invalid credentials !!! ");
+                }
+            }
 
-            if (response == 1) {
-                window.location.href = "/User/UsersDetail";
-            }
-            if (response == 2) {
-                window.location.href = "/Project/ListAllProjects";
-            }
-            if (response == 3) {
-                window.location.href = "/Project/ListAllStudentProjects";
-            }
-            if (response == -1) {
-                alert("Invalid credentials !!! ");
-            }
-        }
-
-    </script>
+        </script>
 
 </body>
 </html>

@@ -1,46 +1,52 @@
 ﻿@{
     ViewBag.Title = "Result";
-    Layout = "~/Views/_LayoutPage1.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @model List<FYPM.Models.Result>
 
-<a style="margin-left:10px" href="@Url.Action("AddResult")" class="btn btn-primary">Create Result</a>
-
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-content">
-                    <div class="wrapper wrapper-content">
-                        <div class="row">
-                            <table class="table  table-hover table-responsive table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Task</th>
-                                        <th>Student</th>
-                                        <th>Task Status</th>
-                                        <th>Score</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table_body" class="scrollable">
-                                    @if (Model.Count() > 0)
-                                    {
-                                        foreach (var result in Model)
+<div class="card p-3 mt-3">
+    <div class="card-title d-flex flex-wrap justify-content-between align-items-center mb-0">
+        <h3 class="card-label">
+            Project Details
+        </h3>
+        <a style="margin-left:10px" href="@Url.Action("AddResult")" class="btn btn-primary">Create Result</a>
+    </div>
+    <div class="card-body">
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="wrapper wrapper-content table-responsive">
+                                <table class="table cstm_table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Task</th>
+                                            <th>Student</th>
+                                            <th>Task Status</th>
+                                            <th>Score</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_body" class="scrollable">
+                                        @if (Model.Count() > 0)
                                         {
-                                            <tr>
-                                                <td>@result.Task.TaskName</td>
-                                                <td>@string.Concat(result.User.FirstName, " ", result.User.LastName, " - ", result.User.CustomId)</td>
-                                                <td>@result.Task.TaskStatus</td>
-                                                <td>@result.Score</td>
-                                                <td>
-                                                    <a class="btn btn-danger delete-button" data-id="@result.ResultId">Delete</a>
-                                                </td>
-                                            </tr>
+                                            foreach (var result in Model)
+                                            {
+                                                <tr>
+                                                    <td>@result.Task.TaskName</td>
+                                                    <td>@string.Concat(result.User.FirstName, " ", result.User.LastName, " - ", result.User.CustomId)</td>
+                                                    <td>@result.Task.TaskStatus</td>
+                                                    <td>@result.Score</td>
+                                                    <td>
+                                                        <a class="btn btn-danger delete-button" data-id="@result.ResultId">Delete</a>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
-                                    }
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
