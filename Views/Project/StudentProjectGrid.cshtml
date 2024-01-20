@@ -1,4 +1,4 @@
-﻿@model List<FYPM.Models.ProjectDetail>
+﻿@model List<FYPM.Models.ViewModel.ProjectViewModel>
 @{
     ViewBag.Title = "StudentProjectGrid";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -39,7 +39,14 @@
                                                 <td>100</td>
                                                 <td>@projectDetail.StudentsAllowed</td>
                                                 <td>
-                                                    <a data-project-id="@projectDetail.ProjectId" onclick="SendProjectRequest();" class="btn btn-success register-button">Project Request</a>
+                                                    @if (projectDetail.HasSentRequest)
+                                                    {
+                                                        <a data-project-id="@projectDetail.ProjectId" onclick="CancelProjectRequest(@projectDetail.ProjectId);" class="btn btn-danger text-white cancel-button">Cancel Request</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a data-project-id="@projectDetail.ProjectId" onclick="SendProjectRequest(@projectDetail.ProjectId);" class="btn btn-success text-white register-button">Send Request</a>
+                                                    }
                                                 </td>
                                             </tr>
                                         }
@@ -59,36 +66,37 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $(".register-button").click(function () {
-            var projectId = $(this).data("project-id");
+    //$(document).ready(function () {
+    //    $(".register-button").click(function () {
+    //        var projectId = $(this).data("project-id");
 
-            $.ajax({
-                type: "POST",
-                url: "/Project/RegisterProject",
-                data: { projectId: projectId },
-                success: function (response) {
-                    if (response == 1) {
-                        alert("Project request sent to supervisor!");
-                    } else {
-                        alert("Failed to send project request. " + response.message);
-                    }
-                },
-                error: function () {
-                    alert("An error occurred while registering the project.");
-                }
-            });
-        });
-    });
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "/Project/RegisterProject",
+    //            data: { projectId: projectId },
+    //            success: function (response) {
+    //                if (response == 1) {
+    //                    alert("Project request sent to supervisor!");
+    //                } else {
+    //                    alert("Failed to send project request. " + response.message);
+    //                }
+    //            },
+    //            error: function () {
+    //                alert("An error occurred while registering the project.");
+    //            }
+    //        });
+    //    });
+    //});
 
     function SendProjectRequest(projectId) {
         $.ajax({
             type: "POST",
-            url: "/Project/RegisterProject",
+            url: "/Project/SaveProjectRequests",
             data: { projectId: projectId },
             success: function (response) {
                 if (response === 1) {
                     alert("Project request sent to supervisor!");
+                    window.location.reload();
                 } else {
                     alert("Failed to send project request. " + response.message);
                 }
@@ -99,11 +107,24 @@
         });
     }
 
-    $(document).ready(function () {
-        $(".register-button").click(function () {
-            var projectId = $(this).data("project-id");
-            SendProjectRequest(projectId);
+    function CancelProjectRequest(projectId) {
+        $.ajax({
+            type: "POST",
+            url: "/Project/CancelProjectRequest",
+            data: { projectId: projectId },
+            success: function (response) {
+                if (response === 1) {
+                    alert("Project request canceled!");
+                    window.location.reload();
+                } else {
+                    alert("Failed to cancel this project request. " + response.message);
+                }
+            },
+            error: function () {
+                alert("An error occurred while cancel this request.");
+            }
         });
-    });
+    }
+    
 </script>
 

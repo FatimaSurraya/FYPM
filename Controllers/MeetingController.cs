@@ -1,5 +1,6 @@
 ﻿using FYPM.Models;
 using FYPM.Models.ViewModel;
+using FYPM.Services.Agora;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,19 +18,34 @@ namespace FYPM.Controllers
         {
             var userId = Convert.ToInt32(Session["UserID"]);
             List<Meeting> meetings = dbContext.Meetings.Where(x => x.SupervisorID == userId).ToList();
-            return View("Meeting", meetings);
+            return View("Meetings", meetings);
         }
 
         public ActionResult ListAllStudentMeetings()
         {
             var userId = Convert.ToInt32(Session["UserID"]);
             List<Meeting> meetings = dbContext.Meetings.Where(x => x.StudentID == userId).ToList();
-            return View("StudentMeeting", meetings);
+            return View("Meetings", meetings);
         }
-
+        public ActionResult StartMeeting(string channel) {
+            AgoraTokenBuilderService agoraTokenBuilderService = new AgoraTokenBuilderService();
+            var userId = Session["UserID"].ToString();
+            var appId = "5c84b8b3638042ff9358081f81682120";
+            var certificateId = "78159623a565417696a509234e9eb7c6";
+            uint privilegeExpiredTs = (uint)agoraTokenBuilderService.ConvertToUnixTimestamp(DateTime.Now) + 86400;
+            string token = agoraTokenBuilderService.buildRTCToken(appId,certificateId, channel, userId, privilegeExpiredTs);
+            StartMeetingViewModel model = new StartMeetingViewModel
+            {
+                AppId = appId,
+                Token = token,
+                ChannelName = channel,
+                Uid = userId
+            };
+            
+            return View(model);
+        }
         public ActionResult AddMeeting()
         {
-
             var assignedTo = GetAssignedToUsers()?.Select(x => new SelectListItem
             {
                 Value = x.UserId.ToString(),
@@ -41,7 +57,7 @@ namespace FYPM.Controllers
                 AssignedTo = assignedTo
             };
 
-            return View("AddMeeting", viewModel);
+            return View("AddMeetings", viewModel);
         }
 
 

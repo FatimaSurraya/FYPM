@@ -46,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Crc32.NET, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dc0b95cf99bf4e99, processorArchitecture=MSIL">
+      <HintPath>packages\Crc32.NET.1.2.0\lib\net20\Crc32.NET.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -202,11 +205,25 @@
     </Compile>
     <Compile Include="Models\ViewModel\MeetingViewModel.cs" />
     <Compile Include="Models\ViewModel\MessageViewModel.cs" />
+    <Compile Include="Models\ViewModel\ProjectRequestsViewModel.cs" />
     <Compile Include="Models\ViewModel\ProjectSupervisor.cs" />
+    <Compile Include="Models\ViewModel\ProjectViewModel.cs" />
     <Compile Include="Models\ViewModel\ResultViewModel.cs" />
+    <Compile Include="Models\ViewModel\StartMeetingViewModel.cs" />
     <Compile Include="Models\ViewModel\TaskViewModel.cs" />
     <Compile Include="Models\ViewModel\TimetableViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Agora\AccessToken.cs" />
+    <Compile Include="Services\Agora\AgoraTokenBuilderService.cs" />
+    <Compile Include="Services\Agora\ByteBuf.cs" />
+    <Compile Include="Services\Agora\ByteBuffer.cs" />
+    <Compile Include="Services\Agora\DynamicKeyUtil.cs" />
+    <Compile Include="Services\Agora\IAgoraTokenBuilderService.cs" />
+    <Compile Include="Services\Agora\IPackable.cs" />
+    <Compile Include="Services\Agora\MemoryStreamExtensions.cs" />
+    <Compile Include="Services\Agora\PackContent.cs" />
+    <Compile Include="Services\Agora\PrivilegeMessage.cs" />
+    <Compile Include="Services\Agora\TokenBuilderUtils.cs" />
     <Compile Include="Services\ValidationService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +256,8 @@
       <DependentUpon>FYP_MSModel.edmx</DependentUpon>
       <LastGenOutput>FYP_MSModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\AgoraMeeting.js" />
+    <Content Include="Scripts\AgoraRTC_N-4.20.0.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -299,6 +318,7 @@
     <Content Include="Views\Meeting\SendMeetingUpdate.cshtml" />
     <Content Include="Views\Meeting\Meetings.cshtml" />
     <Content Include="Views\Meeting\AddMeetings.cshtml" />
+    <Content Include="Views\Meeting\StartMeeting.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

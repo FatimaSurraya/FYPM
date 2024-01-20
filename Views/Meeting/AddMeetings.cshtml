@@ -16,7 +16,7 @@
                 <select class="form-control" id="SelectedAssignedTo" multiple="multiple" name="SelectedAssignedTo">
                     @foreach (var option in Model.AssignedTo)
                     {
-                        <option value="@option.Values">@option.Text</option>
+                        <option value="@option.Value">@option.Text</option>
                     }
                 </select>
             </div>

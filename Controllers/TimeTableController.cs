@@ -25,7 +25,7 @@ namespace FYPM.Controllers
                     var parts = timetable.Timetable1.Split('|');
                     var timetableViewModel = new TimetableViewModel
                     {
-                        Date = DateTime.ParseExact(parts[0], "MM-dd-yyyy", CultureInfo.InvariantCulture),
+                        Date = DateTime.ParseExact(parts[0], "MM/dd/yyyy", CultureInfo.InvariantCulture),
                         DayOfWeek = parts[1],
                         Time = TimeSpan.Parse(parts[2]),
                         Event = parts[3],

@@ -9,18 +9,19 @@ using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using Ionic.Zip;
 using FYPM.Models.ViewModel;
+using System.Net;
 
 namespace FYPM.Controllers
 {
-    public class ProjectController : Controller                         
+    public class ProjectController : Controller
     {
         FYP_MSEntities1 dbContext = new FYP_MSEntities1();
-       
+
         public ActionResult UploadProject()
         {
             return View();
         }
-   
+
         [HttpPost]
         public JsonResult InsertProject(ProjectDetail projectDetail, List<HttpPostedFileBase> UploadDocuments)
         {
@@ -181,7 +182,7 @@ namespace FYPM.Controllers
 
             if (projectDetail != null)
             {
-                var documents = dbContext.ProjectDocuments.Where(x=>x.ProjectId == id).ToList();
+                var documents = dbContext.ProjectDocuments.Where(x => x.ProjectId == id).ToList();
                 documents.ForEach(x => dbContext.ProjectDocuments.Remove(x));
                 dbContext.SaveChanges();
                 dbContext.ProjectDetails.Remove(projectDetail);
@@ -206,26 +207,29 @@ namespace FYPM.Controllers
         #region student
         public ActionResult ListAllStudentProjects()
         {
-            var projects = dbContext.ProjectDetails.ToList();
-
-            foreach (var project in projects)
-            {
-                project.ProjectDocuments = new List<ProjectDocument>();
-              var documents = dbContext.ProjectDocuments
-                    .Where(x => x.ProjectId == project.ProjectId)
-                    .ToList();
-                foreach(var document in documents)
-                {
-                    project.ProjectDocuments.Clear();
-                    project.ProjectDocuments.Add(document);
-
-                }
-            }
-
+            var userId = Convert.ToInt32(Session["UserID"]);
+            var projects = dbContext.ProjectDetails.Select(p => new ProjectViewModel { 
+            ProjectId = p.ProjectId,
+            Title = p.Title,
+            Description = p.Description,
+            StudentsAllowed = p.StudentsAllowed,
+            HasSentRequest = p.StudentProjectRequests.Any(r => r.UserId == userId)
+            }).ToList();         
             return View("StudentProjectGrid", projects);
         }
-
-
+        [HttpPost]
+        public ActionResult CancelProjectRequest(int projectId)
+        {
+            var userId = Convert.ToInt32(Session["UserID"]);
+            var isApproved = dbContext.StudentProjectRequests.Any(r => r.UserId == userId && r.ProjectId == projectId && r.IsApproved == true);
+            if (isApproved) {
+                return Json(new { success = false, message = "You cannot cancel this request because your request has already been approved." }, JsonRequestBehavior.AllowGet);
+            }
+            var requests = dbContext.StudentProjectRequests.Where(r => r.UserId == userId && r.ProjectId == projectId && r.IsApproved != true).ToList();
+            dbContext.StudentProjectRequests.RemoveRange(requests);
+            dbContext.SaveChanges();
+            return Json(1, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ShowAllTasks()
         {
             var userId = Convert.ToInt32(Session["UserID"]);
@@ -303,17 +307,40 @@ namespace FYPM.Controllers
         #endregion
 
         //Requests approvals 
-        public ActionResult ProjectRequests(int requestId, bool isApproved)
+        public ActionResult ProjectRequests()
         {
-            var request = dbContext.StudentProjectRequests.FirstOrDefault(u => u.RequestId == requestId);
-            if (request != null)
-            {
-                request.IsApproved = isApproved;
-                dbContext.SaveChanges();
-                return Json(1);
-            }
-            return Json(0);
+            var userId = Convert.ToInt32(Session["UserID"]);
+
+
+            List<StudentProjectRequest> projectRequests = dbContext.StudentProjectRequests.ToList();
+
+            return View("ProjectRequests", projectRequests);
         }
+        [HttpPost]
+        public ActionResult SaveProjectRequests(int projectId)
+        {
+            var userId = Convert.ToInt32(Session["UserID"]);
+            var existingRequest = dbContext.StudentProjectRequests
+                .FirstOrDefault(x => x.UserId == userId);
+            if (existingRequest != null)
+            {
+                return Json(new { success = false, message = "You cannot send multiple requests, please cancel the old request and then try again." }, JsonRequestBehavior.AllowGet);
+            }
+
+            var request = new StudentProjectRequest
+            {
+                UserId = userId,
+                ProjectId = projectId,
+                RequestTime = DateTime.Now,
+                IsApproved = false
+            };
+
+            dbContext.StudentProjectRequests.Add(request);
+            dbContext.SaveChanges();
+            return Json(1, JsonRequestBehavior.AllowGet);
+
+        }
+
 
         //Project Requests
         public ActionResult RegisterProject(int projectId)
@@ -322,18 +349,18 @@ namespace FYPM.Controllers
             var user = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             var project = dbContext.ProjectDetails.FirstOrDefault(p => p.ProjectId == projectId);
 
-            var message = new Message
-            {
-                MessageText = user.FirstName + " " + user.LastName + " requested for the " + project.Title + " project.",
-                SenderId = user.UserId,
-                ReceiverId = project.SupervisorID,
-                MessageDate = DateTime.Now
-            };
-            dbContext.Messages.Add(message);
+            //var message = new Message
+            //{
+            //    MessageText = user.FirstName + " " + user.LastName + " requested for the " + project.Title + " project.",
+            //    SenderId = user.UserId,
+            //    ReceiverId = project.SupervisorID,
+            //    MessageDate = DateTime.Now
+            //};
+            //dbContext.Messages.Add(message);
             dbContext.SaveChanges();
             return Json(1);
         }
-          
+
 
 
 
