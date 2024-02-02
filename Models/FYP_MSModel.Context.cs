@@ -33,6 +33,7 @@ namespace FYPM.Models
         public virtual DbSet<ProjectDocument> ProjectDocuments { get; set; }
         public virtual DbSet<ProjectList> ProjectLists { get; set; }
         public virtual DbSet<Result> Results { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<Timetable> Timetables { get; set; }
         public virtual DbSet<User> Users { get; set; }

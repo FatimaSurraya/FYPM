@@ -21,6 +21,5 @@ namespace FYPM.Models.ViewModel
         [Display(Name = "Meeting Type")]
         public string MeetingType { get; set; }
         public List<SelectListItem> AssignedTo { get; set; }
-          public int ChannelId { get; set; }
     }
 }

@@ -22,9 +22,8 @@
                                     <thead>
                                         <tr>
                                             <th>RequestId</th>
-                                            <th>ProjectTitle</th>
-                                            <th>StudentID</th>
-                                            <th>StudentName</th>
+                                            <th>ProjectId</th>
+                                            <th>UserId</th>
                                             <th>RequestTime</th>
                                             <th>IsApproved</th>
                                             <th>Action</th>
@@ -33,12 +32,10 @@
                                     <tbody>
                                         @foreach (var request in Model)
                                         {
-                                            var fullName = request.User.FirstName + " " + request.User.LastName;
                                             <tr>
                                                 <td>@request.RequestId</td>
-                                                <td>@request.ProjectDetail.Title</td>
-                                                <td>@request.User.CustomId</td>
-                                                <td>@fullName</td>
+                                                <td>@request.ProjectId</td>
+                                                <td>@request.UserId</td>
                                                 <td>@request.RequestTime</td>
                                                 <td>
                                                     @if (request.IsApproved.HasValue && request.IsApproved.Value)
@@ -51,23 +48,7 @@
                                                     }
 
                                                 </td>
-                                                <td>
-                                                    @if (request.IsApproved.HasValue && request.IsApproved.Value)
-                                                    {
-                                                        <span class="badge badge-success">Approved</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="badge badge-danger">Pending</span>
-                                                    }
-                                                </td>
-                                                <td>
-                                                    @if (!(request.IsApproved.HasValue && request.IsApproved.Value))
-                                                    {
-                                                        <button type="button" class="btn btn-primary" onclick="approveProjectRequest('@request.RequestId', this)">Approve Request</button>
-                                                    }
-                                                </td>
-
+                                                <td> <button type="button" class="btn btn-primary" onclick="approveProjectRequest()">Approve Request</button></td>
                                             </tr>
                                         }
                                     </tbody>
@@ -83,21 +64,50 @@
 
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script src="~/Scripts/bootstrap.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- Include Select2 CSS -->
+<link href="~/Content/css/plugins/select2/select2.min.css" rel="stylesheet" />
+
+<!-- Include Select2 JS -->
+<script src="~/Content/js/plugins/select2/select2.full.min.js"></script>
 
 <script>
-    function approveProjectRequest(requestId, button) {
+    function approveProjectRequest() {
+        var requestId = document.getElementById("Request").value;
+        var projectId = document.getElementById("Project").value;
+        var userId = document.getElementById("User").value;
+        var requestTime = document.getElementById("RequestTime").value;
+        var isApproved = document.getElementById("IsApproved").value; // Assuming 1 for approved, 0 for not approved
+
+        // Validate required fields
+        if (!requestId || !projectId || !userId || !requestTime || !isApproved) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
+        // Validate IsApproved value (ensure it's 1 or 0)
+        if (isApproved !== "1" && isApproved !== "0") {
+            alert("Please enter a valid IsApproved value (1 for approved, 0 for not approved).");
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append('RequestId', requestId);
+        formData.append('ProjectId', projectId);
+        formData.append('UserId', userId);
+        formData.append('RequestTime', requestTime);
+        formData.append('IsApproved', isApproved);
+
         $.ajax({
-            url: '/Project/ApproveProjectRequest',
+            url: '/Project/ProjectRequests', // Assuming this is the correct endpoint for approval
             method: 'post',
-            data: requestId,
-            data: { 'requestId': requestId },
-            success: function (response) {
-                if (response == 1) {
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (obj) {
+                if (obj == 1) { // Assuming 1 indicates successful approval
                     alert("Project Request Approved Successfully");
-                    $(button).text('Approved').attr('disabled', true);
-                    window.location.href = '/Project/ProjectRequests';
+                    window.location.href = '/Project/ProjectRequests'; // Redirect to a list of requests
                 } else {
                     alert("There was an error approving the request. Please try again.");
                 }

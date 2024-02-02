@@ -40,13 +40,15 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/bootstrap.min.js"></script>
 <script>
+
     function updateTask() {
         var selectedProjectId = $("#SelectedProjectId").val();
         var selectedAssignedTo = $("#SelectedAssignedTo").val();
-        var dueDate = $("#DueDate").val();
+        var dueDate = $("#datepicker").val();
         var taskStatus = $("#TaskStatus").val();
 
         var taskData = {
@@ -55,31 +57,27 @@
             DueDate: dueDate,
             TaskStatus: taskStatus
         };
+
         $.ajax({
             type: "POST",
-            url: "/Task/SaveTask",
+            url: "/Project/SaveTask",
             data: JSON.stringify(taskData),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function (response) {
-                // Handle successful response
-                if (response == 1) {
-                    window.location.href = "/Task/ListAllTasks";
-                }
-            },
-            error: function (xhr, status, error) {
-                // Handle error
-                console.error("Error: " + status, error);
-                $("#result").html("Error: Unable to fetch data");
-            }
+            success: TaskSaved
         });
+
+        function TaskSaved(response) {
+            if (response == 1) {
+                window.location.href = "/Task/ListAllTasks";
+            }
+        }
     }
 
     $(document).ready(function () {
         $("#SelectedProjectId").val("@Model.SelectedProjectId");
-        @*$("#SelectedAssignedTo").val(["@Model.SelectedAssignedTo"]);*@
+        $("#SelectedAssignedTo").val([@Model.SelectedAssignedTo]);
     });
-
 
 </script>
 

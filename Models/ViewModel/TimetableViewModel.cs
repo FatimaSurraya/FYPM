@@ -13,8 +13,5 @@ namespace FYPM.Models.ViewModel
         public TimeSpan Time { get; set; }
         public string Event { get; set; }
         public string Room { get; set; }
-        public string UserName { get; set; }
-        public string UserType { get; set; }
-
     }
 }

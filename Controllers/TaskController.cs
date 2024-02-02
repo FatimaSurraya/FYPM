@@ -5,8 +5,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FYPM.Models.ViewModel;
-using Ionic.Zip;
-using System.IO;
 
 namespace FYPM.Controllers
 {
@@ -49,7 +47,7 @@ namespace FYPM.Controllers
         [HttpPost]
         public JsonResult SaveTask(TaskViewModel task)
         {
-              if (ModelState.IsValid && task.SelectedAssignedTo != null && task.SelectedAssignedTo.Count() > 0)
+            if (ModelState.IsValid && task.SelectedAssignedTo != null && task.SelectedAssignedTo.Count() > 0)
             {
                 var project = dbContext.ProjectDetails.FirstOrDefault(x => x.ProjectId == task.SelectedProjectId);
                 foreach (var item in task.SelectedAssignedTo)
@@ -141,42 +139,7 @@ namespace FYPM.Controllers
             return Json(new { success = false, message = "Task not found." });
         }
 
-
-        public ActionResult DownloadDocuments(int projectId)
-        {
-            var documents = dbContext.ProjectDocuments?.Where(x => x.ProjectId== projectId)?.Select(x => new
-            {
-                x.DocumentPath,
-                x.DocumentName
-            }).ToList();
-
-            if (documents != null && documents.Count() > 0)
-            {
-                using (MemoryStream zipStream = new MemoryStream())
-                {
-                    using (ZipFile zipFile = new ZipFile())
-                    {
-                        foreach (var document in documents)
-                        {
-                            if (!string.IsNullOrEmpty(document.DocumentPath) && System.IO.File.Exists(document.DocumentPath))
-                            {
-                                byte[] fileBytes = System.IO.File.ReadAllBytes(document.DocumentPath);
-                                string fileName = document.DocumentName;
-                                zipFile.AddEntry(fileName, fileBytes);
-                            }
-                        }
-
-                        zipFile.Save(zipStream);
-                    }
-
-                    string zipFileName = "project_files.zip";
-
-                    return File(zipStream.ToArray(), "application/zip", zipFileName);
-                }
-            }
-
-            return HttpNotFound();
-        }
+       
 
 
 

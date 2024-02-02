@@ -11,7 +11,6 @@ namespace FYPM.Models.ViewModel
         public string ChannelName { get; set; }
         public string Token { get; set; }
         public string AppId { get; set; }
-        public string Uid { get; set; }
-        public int ChannelId { get; set; }
+        public string  Uid { get; set; }
     }
 }

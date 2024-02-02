@@ -1,19 +1,16 @@
 ﻿@{
     ViewBag.Title = "Timetable";
     Layout = "~/Views/Shared/_Layout.cshtml";
-} 
+}
 
 @model List<FYPM.Models.ViewModel.TimetableViewModel>
-
 
 <div class="card p-3 mt-3">
     <div class="card-title d-flex flex-wrap justify-content-between align-items-center mb-0">
         <h3 class="card-label">
             Timetable
         </h3>
-      
         <a style="margin-left:10px" href="@Url.Action("AddTimetable")" class="btn btn-primary">Add Timetable</a>
-
     </div>
     <div class="card-body">
         <div class="wrapper wrapper-content animated fadeInRight">
@@ -25,8 +22,6 @@
                                 <table class="cstm_table table table-hover table-striped">
                                     <thead>
                                         <tr>
-                                            <th>UserType </th>
-                                            <th>UserName</th>
                                             <th>Date</th>
                                             <th>Day of the Week</th>
                                             <th>Time</th>
@@ -38,10 +33,7 @@
                                         {
                                             foreach (var timetable in Model)
                                             {
-                                               
                                                 <tr>
-                                                    <td>@timetable.UserType</td>
-                                                    <td>@timetable.UserName</td>
                                                     <td>@timetable.Date.ToString("MM/dd/yyyy")</td>
                                                     <td>@timetable.DayOfWeek</td>
                                                     <td>@timetable.Time.ToString()</td>

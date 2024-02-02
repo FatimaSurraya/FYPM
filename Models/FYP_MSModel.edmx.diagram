@@ -4,17 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="dd5b6d94580546929cc586593909d0da" Name="Diagram1" ZoomLevel="47">
+      <Diagram DiagramId="dd5b6d94580546929cc586593909d0da" Name="Diagram1">
         <EntityTypeShape EntityType="FYP_MSModel.Meeting" Width="1.5" PointX="5.25" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.Message" Width="1.5" PointX="5.25" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.ProjectDetail" Width="1.5" PointX="5.25" PointY="9" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.ProjectDocument" Width="1.5" PointX="7.5" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="FYP_MSModel.ProjectList" Width="1.5" PointX="12.25" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FYP_MSModel.ProjectList" Width="1.5" PointX="2.5" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.Result" Width="1.5" PointX="9.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FYP_MSModel.sysdiagram" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.Task" Width="1.5" PointX="7.5" PointY="5.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="FYP_MSModel.Timetable" Width="1.5" PointX="1.625" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FYP_MSModel.Timetable" Width="1.5" PointX="5.25" PointY="13" IsExpanded="true" />
         <EntityTypeShape EntityType="FYP_MSModel.User" Width="1.5" PointX="3" PointY="6.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="FYP_MSModel.UserType" Width="1.5" PointX="2.125" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FYP_MSModel.UserType" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
         <AssociationConnector Association="FYP_MSModel.FK_Meetings_Users_Student" ManuallyRouted="false" />
         <AssociationConnector Association="FYP_MSModel.FK_Meetings_Users_Supervisor" ManuallyRouted="false" />
         <AssociationConnector Association="FYP_MSModel.FK_Messages_Users_Receiver" ManuallyRouted="false" />
@@ -28,7 +29,7 @@
         <AssociationConnector Association="FYP_MSModel.FK_Tasks_Users" ManuallyRouted="false" />
         <AssociationConnector Association="FYP_MSModel.FK_Timetables_Users" ManuallyRouted="false" />
         <AssociationConnector Association="FYP_MSModel.FK_Users_UserTypes" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="FYP_MSModel.StudentProjectRequest" Width="1.5" PointX="9.625" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FYP_MSModel.StudentProjectRequest" Width="1.5" PointX="10.5" PointY="11.375" IsExpanded="true" />
         <AssociationConnector Association="FYP_MSModel.FK__StudentPr__Proje__440B1D61" />
         <AssociationConnector Association="FYP_MSModel.FK__StudentPr__UserI__44FF419A" />
       </Diagram>

@@ -16,19 +16,7 @@ namespace FYPM.Controllers
         public ActionResult ListAllTimetables()
         {
             var userId = Convert.ToInt32(Session["UserID"]);
-            var role = Convert.ToString(Session["RoleName"]);
             List<Timetable> timetableDbos = dbContext.Timetables.Where(x => x.UserId == userId).ToList();
-
-            if (role == "Student")
-            {
-                var projectId = dbContext.StudentProjectRequests.FirstOrDefault(x => x.UserId == userId && (bool) x.IsApproved)?.ProjectId;
-                var supervisorId = dbContext.ProjectDetails.FirstOrDefault(x => x.ProjectId == projectId)?.SupervisorID;
-                var supevisorTimetables = dbContext.Timetables.Where(x => x.UserId == supervisorId).ToList();
-                foreach (var tt in supevisorTimetables)
-                {
-                    timetableDbos.Add(tt);
-                }
-            }
             var timetables = new List<TimetableViewModel>();
             if (timetableDbos != null && timetableDbos.Any())
             {
@@ -42,10 +30,7 @@ namespace FYPM.Controllers
                         Time = TimeSpan.Parse(parts[2]),
                         Event = parts[3],
                         Room = parts[4],
-                        TimetableId = timetable.TimetableId,
-                        UserName = timetable.User.FirstName + " " + timetable.User.LastName,
-                        UserType = timetable.User.UserType.TypeName
-
+                        TimetableId = timetable.TimetableId
                     };
                     timetables.Add(timetableViewModel);
                 }
@@ -53,7 +38,6 @@ namespace FYPM.Controllers
             return View("Timetable", timetables);
         }
 
-     
         public ActionResult AddTimetable()
         {
             return View("AddTimetable");

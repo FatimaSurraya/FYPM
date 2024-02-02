@@ -5,10 +5,9 @@
 }
 
 @model List<FYPM.Models.Meeting>
-@if (Session["RoleName"].ToString() == "Supervisor")
-{
-    <a style="margin-left:10px" href="@Url.Action("AddMeeting")" class="btn btn-primary">Create Meeting</a>
-}
+
+<a style="margin-left:10px" href="@Url.Action("AddMeeting")" class="btn btn-primary">Create Meeting</a>
+
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
