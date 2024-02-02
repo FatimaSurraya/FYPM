@@ -22,5 +22,6 @@ namespace FYPM.Models
     
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        public Guid ChannelId { get; internal set; }
     }
 }

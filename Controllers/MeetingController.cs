@@ -75,6 +75,7 @@ namespace FYPM.Controllers
                         StudentID = item,
                         SupervisorID = Convert.ToInt32(Session["UserID"]),
                         ScheduledDate = meeting.ScheduledDate,
+                        ChannelId = Guid.NewGuid()
                     };
                     dbContext.Meetings.Add(MeetingDbo);
                 }

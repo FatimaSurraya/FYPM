@@ -208,21 +208,37 @@ namespace FYPM.Controllers
         public ActionResult ListAllStudentProjects()
         {
             var userId = Convert.ToInt32(Session["UserID"]);
-            var projects = dbContext.ProjectDetails.Select(p => new ProjectViewModel { 
-            ProjectId = p.ProjectId,
-            Title = p.Title,
-            Description = p.Description,
-            StudentsAllowed = p.StudentsAllowed,
-            HasSentRequest = p.StudentProjectRequests.Any(r => r.UserId == userId)
-            }).ToList();         
+            var projects = dbContext.ProjectDetails.Select(p => new ProjectViewModel
+            {
+                ProjectId = p.ProjectId,
+                Title = p.Title,
+                Description = p.Description,
+                StudentsAllowed = p.StudentsAllowed,
+                HasSentRequest = p.StudentProjectRequests.Any(r => r.UserId == userId)
+            }).ToList();
             return View("StudentProjectGrid", projects);
+        }
+        public ActionResult MyProject()
+        {
+            var userId = Convert.ToInt32(Session["UserID"]);
+            var projectId = dbContext.StudentProjectRequests.FirstOrDefault(x => x.UserId == userId && (bool)x.IsApproved).ProjectId;
+            var projects = dbContext.ProjectDetails.Where(x => x.ProjectId == projectId).Select(p => new ProjectViewModel
+            {
+                ProjectId = p.ProjectId,
+                Title = p.Title,
+                Description = p.Description,
+                StudentsAllowed = p.StudentsAllowed,
+                HasSentRequest = p.StudentProjectRequests.Any(r => r.UserId == userId)
+            }).ToList();
+            return View("StudentProject", projects);
         }
         [HttpPost]
         public ActionResult CancelProjectRequest(int projectId)
         {
             var userId = Convert.ToInt32(Session["UserID"]);
             var isApproved = dbContext.StudentProjectRequests.Any(r => r.UserId == userId && r.ProjectId == projectId && r.IsApproved == true);
-            if (isApproved) {
+            if (isApproved)
+            {
                 return Json(new { success = false, message = "You cannot cancel this request because your request has already been approved." }, JsonRequestBehavior.AllowGet);
             }
             var requests = dbContext.StudentProjectRequests.Where(r => r.UserId == userId && r.ProjectId == projectId && r.IsApproved != true).ToList();
@@ -237,7 +253,7 @@ namespace FYPM.Controllers
             return View("StudentTask", tasks);
         }
 
-        public ActionResult DownloadDocuments(int projectId)
+        public ActionResult DownloadDocuments(int projectId = 0)
         {
             var documents = dbContext.ProjectDocuments?.Where(x => x.ProjectId == projectId)?.Select(x => new
             {
@@ -310,9 +326,24 @@ namespace FYPM.Controllers
         public ActionResult ProjectRequests()
         {
             var userId = Convert.ToInt32(Session["UserID"]);
+            var projectIdList = dbContext.ProjectDetails.Where(x => x.SupervisorID == userId).Select(x => x.ProjectId).ToList();
+            List<StudentProjectRequest> projectRequests = new List<StudentProjectRequest>();
+            if (projectIdList.Count() > 0)
+            {
+                foreach (var projectId in projectIdList)
+                {
+                    var studentProjectRequests = dbContext.StudentProjectRequests.Where(x => x.ProjectId == projectId).ToList();
+                    if (studentProjectRequests.Count() > 0)
+                    {
+                        foreach (var studentProjectRequest in studentProjectRequests)
+                        {
+                            projectRequests.Add(studentProjectRequest);
 
+                        }
+                    }
 
-            List<StudentProjectRequest> projectRequests = dbContext.StudentProjectRequests.ToList();
+                }
+            }
 
             return View("ProjectRequests", projectRequests);
         }
@@ -342,6 +373,18 @@ namespace FYPM.Controllers
         }
 
 
+        public ActionResult ApproveProjectRequest(int requestId)
+        {
+            var projectRequest = dbContext.StudentProjectRequests.FirstOrDefault(p => p.RequestId == requestId);
+            if (projectRequest != null)
+            {
+                projectRequest.IsApproved = true;
+                dbContext.SaveChanges();
+            }
+
+            return Json(new { IsApproved = projectRequest?.IsApproved ?? false });
+        }
+
         //Project Requests
         public ActionResult RegisterProject(int projectId)
         {
@@ -360,6 +403,8 @@ namespace FYPM.Controllers
             dbContext.SaveChanges();
             return Json(1);
         }
+
+
 
 
 

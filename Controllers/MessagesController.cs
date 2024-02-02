@@ -20,7 +20,7 @@ namespace FYPM.Controllers
             foreach (var message in messages)
             {
                 var user = dbContext.Users.FirstOrDefault(x => x.UserId == message.SenderId);
-                message.SenderName = user.FirstName + " " + user.LastName + " - " + user.CustomId;
+                message.SenderName = user.FirstName + " " + user.LastName + "  " + user.CustomId;
             }
 
             var viewModel = new MessageViewModel();

@@ -5,43 +5,55 @@
 }
 
 
-<h2 style="margin-left:10px">List of Projects offered</h2>
-
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-content">
-                    <div class="wrapper wrapper-content">
-                        <div class="row">
-                            <table class="table  table-hover table-responsive table-striped" id="mttable">
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Project Description</th>
-                                        <th>Total Marks</th>
-                                        <th>Students Allowed</th>
-                                        <th>Project Request</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table_body" class="scrollable">
-                                    @foreach (var projectDetail in Model)
-                                    {
+<div class="card p-3 mt-3">
+    <div class="card-title d-flex flex-wrap justify-content-between align-items-center mb-0">
+        <h3 class="card-label">
+            Projects
+        </h3>
+    </div>
+    <div class="card-body">
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="wrapper wrapper-content table-responsive">
+                                <table class="table cstm_table table-hover table-striped" id="mttable">
+                                    <thead>
                                         <tr>
-                                            <td>@projectDetail.Title</td>
-                                            <td>
-                                                <a href="/Project/DownloadDocuments?projectId=@projectDetail.ProjectId"  target="_blank">Project File</a>
-                                            </td>
-                                            <td>100</td>
-                                            <td>@projectDetail.StudentsAllowed</td>
-                                            <td>
-                                                <a data-project-id="@projectDetail.ProjectId" onclick="SendProjectRequest();" class="btn btn-success register-button">Project Request</a>
-                                            </td>
+                                            <th>Title</th>
+                                            <th>Project Description</th>
+                                            <th>Total Marks</th>
+                                            <th>Students Allowed</th>
+                                            <th>Project Request</th>
                                         </tr>
-                                    }
+                                    </thead>
+                                    <tbody id="table_body" class="scrollable">
+                                        @foreach (var projectDetail in Model)
+                                        {
+                                            <tr>
+                                                <td>@projectDetail.Title</td>
+                                                <td>
+                                                    <a href="/Project/DownloadDocuments?projectId=@projectDetail.ProjectId" target="_blank">Project File</a>
+                                                </td>
+                                                <td>100</td>
+                                                <td>@projectDetail.StudentsAllowed</td>
+                                                <td>
+                                                    @if (projectDetail.HasSentRequest)
+                                                    {
+                                                        <a data-project-id="@projectDetail.ProjectId" onclick="CancelProjectRequest(@projectDetail.ProjectId);" class="btn btn-danger text-white cancel-button">Cancel Request</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a data-project-id="@projectDetail.ProjectId" onclick="SendProjectRequest(@projectDetail.ProjectId);" class="btn btn-success text-white register-button">Send Request</a>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -76,32 +88,15 @@
     //    });
     //});
 
-            $.ajax({
-                type: "POST",
-                url: "/Project/RegisterProject",
-                data: { projectId: projectId },
-                success: function (response) {
-                    if (response == 1) {
-                        alert("Project request sent to supervisor!");
-                    } else {
-                        alert("Failed to send project request. " + response.message);
-                    }
-                },
-                error: function () {
-                    alert("An error occurred while registering the project.");
-                }
-            });
-        });
-    });
-
     function SendProjectRequest(projectId) {
         $.ajax({
             type: "POST",
-            url: "/Project/RegisterProject",
+            url: "/Project/SaveProjectRequests",
             data: { projectId: projectId },
             success: function (response) {
                 if (response === 1) {
                     alert("Project request sent to supervisor!");
+                    window.location.reload();
                 } else {
                     alert("Failed to send project request. " + response.message);
                 }
@@ -112,11 +107,24 @@
         });
     }
 
-    $(document).ready(function () {
-        $(".register-button").click(function () {
-            var projectId = $(this).data("project-id");
-            SendProjectRequest(projectId);
+    function CancelProjectRequest(projectId) {
+        $.ajax({
+            type: "POST",
+            url: "/Project/CancelProjectRequest",
+            data: { projectId: projectId },
+            success: function (response) {
+                if (response === 1) {
+                    alert("Project request canceled!");
+                    window.location.reload();
+                } else {
+                    alert("Failed to cancel this project request. " + response.message);
+                }
+            },
+            error: function () {
+                alert("An error occurred while cancel this request.");
+            }
         });
-    });
+    }
+
 </script>
 

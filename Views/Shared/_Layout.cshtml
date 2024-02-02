@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - FYPMS</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -16,11 +16,13 @@
             width: calc(100% - 230px);
             transition: .4s ease all;
         }
+
         body {
             height: 100%; /* 100% of the viewport height */
             margin: 0; /* Remove default margin */
             padding: 0; /* Remove default padding */
         }
+
         .sideNavbar-main {
             min-width: 230px;
             width: 230px;
@@ -29,10 +31,12 @@
             z-index: 99;
             height: 100%;
         }
+
         #sidebar .nav-link.active {
-            background-color: #007bff; 
-            color: #fff; 
+            background-color: #007bff;
+            color: #fff;
         }
+
         .sidebar-ul .nav-item .nav-link {
             display: flex;
             align-items: center;
@@ -42,11 +46,13 @@
             padding: 10px 8px 10px 16px;
             font-size: 14px;
         }
+
         .cstm_table thead tr th {
             background-color: #fafafa !important;
             font-size: 14px;
             border: 0;
         }
+
         .sidebar-ul .nav-item .nav-link.active {
             font-weight: 600;
             background: #f0f0f0 !important;
@@ -58,84 +64,46 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            @Html.ActionLink("FYPMS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    @if (string.IsNullOrEmpty(Session["UserID"]?.ToString()))
+        @Html.ActionLink("FYPMS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                @if (string.IsNullOrEmpty(Session["UserID"]?.ToString()))
+                {
+                    <li>@Html.ActionLink("Register", "Register", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                }
+                @if (!string.IsNullOrEmpty(Session["UserID"]?.ToString()))
+                {
+                    <li>@Html.ActionLink("Logout", "Logout", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                }
+            </ul>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <span class="m-r-sm text-muted welcome-message">@Session["Email"]</span>
+                    @if (Session["RoleName"] != null)
                     {
-                        <li>@Html.ActionLink("Register", "Register", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li>@Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    }
-                    @if (!string.IsNullOrEmpty(Session["UserID"]?.ToString()))
-                    {
-                        <li>@Html.ActionLink("Logout", "Logout", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    }
-                    </ul>
-                <ul class="nav navbar-top-links navbar-right">
-                    <li>
-                        <span class="m-r-sm text-muted welcome-message">@Session["Email"]</span>
-                        @if (Session["RoleName"] != null)
+                        if (Session["RoleName"].ToString() == "Supervisor")
                         {
-                            if (Session["RoleName"].ToString() == "Supervisor")
-                            {
-                                <span class="m-r-sm text-muted welcome-message"> Supervisor Panel</span>
-                            }
-                            else if (Session["RoleName"].ToString() == "Admin")
-                            {
-                                <span class="m-r-sm text-muted welcome-message"> Admin Panel</span>
-                            }
-                            else if (Session["RoleName"].ToString() == "Student")
-                            {
-                                <span class="m-r-sm text-muted welcome-message"> Student Panel</span>
-                            }
+                            <span class="m-r-sm text-muted welcome-message"> Supervisor Panel</span>
                         }
-                    </li>
-                </ul>
-                <ul class="nav metismenu" id="side-menu">
-                    <li>
-                        @if (Session["RoleName"] != null)
+                        else if (Session["RoleName"].ToString() == "Admin")
                         {
-                            if (Session["RoleName"].ToString() == "Admin")
-                            {
-                                <a href="#"><i class="fa fa-book"></i> <span class="nav-label">Accounts</span> <span class="fa arrow"></span></a>
-                                <ul class="nav nav-second-level">
-                                    <li><a href="/User/CreateUser">Add User</a></li>
-                                    <li><a href="/User/UsersDetail">View Users</a></li>
-                                </ul>
-                            }
-                            if (Session["RoleName"].ToString() == "Supervisor")
-                            {
-                                <ul class="nav nav-second-level collapse in">
-                                    <li><a href="/Project/AddProject">Add Project</a></li>
-                                    <li><a href="/Project/ListAllProjects">View Projects</a></li>
-                                    <li><a href="/Project/ListAllTasks">Tasks</a></li>
-                                    <li><a href="/Message/Message">Messages</a></li>
-                                    <li><a href="/Meeting/ListAllMeetings">Meetings</a></li>
-                                    <li><a href="/Result/ListAllResults">Results</a></li>
-                                    <li><a href="/Timetable/ListAllTimetables">Timetable</a></li>
-                                </ul>
-                            }
-                            if (Session["RoleName"].ToString() == "Student")
-                            {
-                                <ul class="nav nav-second-level collapse in">
-                                    <li><a href="/Project/ListAllStudentProjects">View Projects</a></li>
-                                    <li><a href="/Task/ShowAllTasks">Tasks Assigned</a></li>
-                                    <li><a href="/Message/Message">Messages</a></li>
-                                    <li><a href="/Meeting/ListAllStudentMeetings">Meetings</a></li>
-                                    <li><a href="/Result/ListAllStudentResults">Results</a></li>
-                                    <li><a href="/Timetable/ListAllTimetables">Timetable</a></li>
-                                </ul>
-                            }
+                            <span class="m-r-sm text-muted welcome-message"> Admin Panel</span>
                         }
-                    </li>
-                </ul>
-            </div>
+                        else if (Session["RoleName"].ToString() == "Student")
+                        {
+                            <span class="m-r-sm text-muted welcome-message"> Student Panel</span>
+                        }
+                    }
+                </li>
+            </ul>
+        </div>
     </nav>
     <div class="container-fluid">
         <div class="d-flex">
@@ -152,13 +120,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        Link 1
+                                    <a class="nav-link" href="/Users/UsersDetail">
+                                        User Details
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        Link 2
+                                    <a class="nav-link" href="/Users/Edit/20">
+                                        Edit Users
                                     </a>
                                 </li>
                                 <!-- Add more links as needed -->
@@ -174,30 +142,35 @@
                                 <li class="nav-item"><a class="nav-link" href="/Meeting/ListAllMeetings">Meetings</a></li>
                                 <li class="nav-item"><a class="nav-link" href="/Result/ListAllResults">Results</a></li>
                                 <li class="nav-item"><a class="nav-link" href="/Timetable/ListAllTimetables">Timetable</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/Meeting/StartMeeting?channel=test">Conference</a></li>
                                 <!-- Add more links as needed -->
                             </ul>
                         }
                         @if (Session["RoleName"].ToString() == "Student")
                         {
-                        <ul class="nav flex-column sidebar-ul">
-                            <li class="nav-item"><a class="nav-link" href="/Project/ListAllStudentProjects">View Projects</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Task/ShowAllTasks">Tasks Assigned</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Message/Message">Messages</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Meeting/ListAllStudentMeetings">Meetings</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Result/ListAllStudentResults">Results</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Timetable/ListAllTimetables">Timetable</a></li>
-                        </ul>
+                            <ul class="nav flex-column sidebar-ul">
+                                <li class="nav-item"><a class="nav-link" href="/Project/ListAllStudentProjects">View Projects</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/Project/MyProject">My Project</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/Task/ShowAllTasks">Tasks Assigned</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/Messages/Message">Messages</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/Meeting/ListAllStudentMeetings">Meetings</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/Timetable/ListAllTimetables">Timetable</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/Result/ListAllStudentResults">Results</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/Meeting/StartMeeting?channel=test">Conference</a></li>
+
+                            </ul>
                         }
                     </div>
                 </nav>
             }
-                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content-body d-flex flex-column mt-2">
-                    <!-- Your page content goes here -->
-                    @RenderBody()
-                </main>
-            </div>
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content-body d-flex flex-column mt-2">
+                <!-- Your page content goes here -->
+                @RenderBody()
+            </main>
+        </div>
     </div>
     <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
     <script src="~/Scripts/js/jquery.metisMenu.js"></script>
     <script src="~/Scripts/js/jquery.slimscroll.min.js"></script>
@@ -225,6 +198,7 @@
         // Set active class on page load based on the current URL
         window.onload = function () {
             var currentPath = window.location.pathname.split('/').pop().split('.')[0];
+            console.log(currentPath);
             setActive(currentPath);
         };
     </script>
@@ -237,4 +211,4 @@
     </script>
     @RenderSection("scripts", required: false)
 </body>
-</html>
+</html>ssss
