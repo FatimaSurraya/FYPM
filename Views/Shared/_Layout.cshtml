@@ -97,6 +97,44 @@
                         }
                     </li>
                 </ul>
+                <ul class="nav metismenu" id="side-menu">
+                    <li>
+                        @if (Session["RoleName"] != null)
+                        {
+                            if (Session["RoleName"].ToString() == "Admin")
+                            {
+                                <a href="#"><i class="fa fa-book"></i> <span class="nav-label">Accounts</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li><a href="/User/CreateUser">Add User</a></li>
+                                    <li><a href="/User/UsersDetail">View Users</a></li>
+                                </ul>
+                            }
+                            if (Session["RoleName"].ToString() == "Supervisor")
+                            {
+                                <ul class="nav nav-second-level collapse in">
+                                    <li><a href="/Project/AddProject">Add Project</a></li>
+                                    <li><a href="/Project/ListAllProjects">View Projects</a></li>
+                                    <li><a href="/Project/ListAllTasks">Tasks</a></li>
+                                    <li><a href="/Message/Message">Messages</a></li>
+                                    <li><a href="/Meeting/ListAllMeetings">Meetings</a></li>
+                                    <li><a href="/Result/ListAllResults">Results</a></li>
+                                    <li><a href="/Timetable/ListAllTimetables">Timetable</a></li>
+                                </ul>
+                            }
+                            if (Session["RoleName"].ToString() == "Student")
+                            {
+                                <ul class="nav nav-second-level collapse in">
+                                    <li><a href="/Project/ListAllStudentProjects">View Projects</a></li>
+                                    <li><a href="/Task/ShowAllTasks">Tasks Assigned</a></li>
+                                    <li><a href="/Message/Message">Messages</a></li>
+                                    <li><a href="/Meeting/ListAllStudentMeetings">Meetings</a></li>
+                                    <li><a href="/Result/ListAllStudentResults">Results</a></li>
+                                    <li><a href="/Timetable/ListAllTimetables">Timetable</a></li>
+                                </ul>
+                            }
+                        }
+                    </li>
+                </ul>
             </div>
     </nav>
     <div class="container-fluid">

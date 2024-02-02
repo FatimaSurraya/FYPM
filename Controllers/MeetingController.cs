@@ -41,11 +41,12 @@ namespace FYPM.Controllers
                 ChannelName = channel,
                 Uid = userId
             };
-            
+
             return View(model);
         }
         public ActionResult AddMeeting()
         {
+
             var assignedTo = GetAssignedToUsers()?.Select(x => new SelectListItem
             {
                 Value = x.UserId.ToString(),
