@@ -19,9 +19,9 @@ namespace FYPM.Models
         public int ReceiverId { get; set; }
         public string MessageText { get; set; }
         public System.DateTime MessageDate { get; set; }
-    
+
+        public string SenderName { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
-        public string SenderName { get; internal set; }
     }
 }

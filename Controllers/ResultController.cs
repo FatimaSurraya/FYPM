@@ -61,7 +61,7 @@ namespace FYPM.Controllers
             {
                 var resultDbo = new Result
                 {
-                    TaskId = result.SelectedTask,
+                    TaskID = result.SelectedTask,
                     SupervisorID = userId,
                     StudentID = result.SelectedAssignedTo,
                     Score = result.Score,

@@ -19,7 +19,8 @@ namespace FYPM.Models
         public System.DateTime ScheduledDate { get; set; }
         public int SupervisorID { get; set; }
         public Nullable<int> StudentID { get; set; }
-    
+        public Nullable<int> channelId { get; set; }
+        public Guid ChannelId { get; internal set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
     }

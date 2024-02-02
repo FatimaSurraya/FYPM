@@ -188,9 +188,6 @@
     <Compile Include="Models\StudentProjectRequest.cs">
       <DependentUpon>FYP_MSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>FYP_MSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Task.cs">
       <DependentUpon>FYP_MSModel.tt</DependentUpon>
     </Compile>
@@ -257,6 +254,8 @@
       <LastGenOutput>FYP_MSModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\AgoraMeeting.js" />
+    <Content Include="Scripts\AgoraRTC_N-4.11.0.js" />
+    <Content Include="Scripts\AgoraRTC_N-4.19.3.js" />
     <Content Include="Scripts\AgoraRTC_N-4.20.0.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -319,6 +318,7 @@
     <Content Include="Views\Meeting\Meetings.cshtml" />
     <Content Include="Views\Meeting\AddMeetings.cshtml" />
     <Content Include="Views\Meeting\StartMeeting.cshtml" />
+    <Content Include="Views\Project\StudentProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

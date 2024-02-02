@@ -20,5 +20,6 @@ namespace FYPM.Models
         public string DocumentPath { get; set; }
     
         public virtual ProjectDetail ProjectDetail { get; set; }
+        public int TaskId { get; internal set; }
     }
 }

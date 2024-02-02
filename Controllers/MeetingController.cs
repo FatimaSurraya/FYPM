@@ -39,7 +39,8 @@ namespace FYPM.Controllers
                 AppId = appId,
                 Token = token,
                 ChannelName = channel,
-                Uid = userId
+                Uid = userId,
+                
             };
             
             return View(model);
@@ -63,7 +64,7 @@ namespace FYPM.Controllers
 
         [HttpPost]
         public JsonResult SaveMeeting(MeetingViewModel meeting)
-        {
+        { 
             if (ModelState.IsValid && meeting.SelectedAssignedTo != null && meeting.SelectedAssignedTo.Count() > 0)
             {
                 foreach (var item in meeting.SelectedAssignedTo)
@@ -74,6 +75,7 @@ namespace FYPM.Controllers
                         StudentID = item,
                         SupervisorID = Convert.ToInt32(Session["UserID"]),
                         ScheduledDate = meeting.ScheduledDate,
+                        ChannelId = Guid.NewGuid()
                     };
                     dbContext.Meetings.Add(MeetingDbo);
                 }

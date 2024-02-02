@@ -24,41 +24,41 @@
                         <div class="ibox-content">
                             <div class="wrapper wrapper-content table-responsive">
                                 <table class="table cstm_table table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Task ID</th>
-                                                <th>Task Name</th>
-                                                <th>Assigned To</th>
-                                                <th>Due Date</th>
-                                                <th>Task Status</th>
-                                                <th>Edit</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="table_body" class="scrollable">
-                                            @if (Model.Count() > 0)
+                                    <thead>
+                                        <tr>
+                                            <th>Task ID</th>
+                                            <th>Task Name</th>
+                                            <th>Assigned To</th>
+                                            <th>Due Date</th>
+                                            <th>Task Status</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_body" class="scrollable">
+                                        @if (Model.Count() > 0)
+                                        {
+                                            foreach (var task in Model)
                                             {
-                                                foreach (var task in Model)
-                                                {
-                                                    <tr>
-                                                        <td>@task.TaskId</td>
-                                                        <td>@task.TaskName</td>
-                                                        <td>@string.Concat(@task.User.FirstName, " ", @task.User.LastName)</td>
-                                                        <td>@task.DueDate.Value.Date</td>
-                                                        <td>@task.TaskStatus</td>
-                                                        <td>
+                                                <tr>
+                                                    <td>@task.TaskId</td>
+                                                    <td>@task.TaskName</td>
+                                                    <td>@string.Concat(@task.User.FirstName, " ", @task.User.LastName)</td>
+                                                    <td>@task.DueDate.Value.Date</td>
+                                                    <td>@task.TaskStatus</td>
+                                                    <td>
 
-                                                            <a class="btn btn-danger edit-button" data-id="@task.TaskId">Edit</a>
-                                                        </td>
-                                                        <td>
-                                                            <a class="btn btn-danger delete-button" data-id="@task.TaskId">Delete</a>
+                                                        <a class="btn btn-danger edit-button" href="/Task/EditTask/@task.TaskId" data-id="@task.TaskId">Edit</a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-danger delete-button" href="/Task/DeleteTask/@task.TaskId" data-id="@task.TaskId">Delete</a>
 
-                                                        </td>
-                                                    </tr>
-                                                }
+                                                    </td>
+                                                </tr>
                                             }
-                                        </tbody>
-                                    </table>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -87,9 +87,8 @@
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
 <script>
     var idToDelete;
 
@@ -101,7 +100,7 @@
 
         $("#confirmDeleteButton").on("click", function () {
             $.ajax({
-                url: "@Url.Action("DeleteTask", "Project")" + "?id=" + idToDelete,
+                url: "@Url.Action("DeleteTask", "Task")" + "?id=" + idToDelete,
                 type: "POST",
                 success: window.location.href = "/Task/ListAllTasks"
             });

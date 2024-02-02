@@ -14,7 +14,7 @@ namespace FYPM.Models
     
     public partial class StudentProjectRequest
     {
-        public int RequestId { get; set; } = 0;
+        public int RequestId { get; set; }
         public Nullable<int> ProjectId { get; set; }
         public Nullable<int> UserId { get; set; }
         public Nullable<System.DateTime> RequestTime { get; set; }

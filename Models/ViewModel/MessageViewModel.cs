@@ -14,5 +14,6 @@ namespace FYPM.Models.ViewModel
         public List<int> SelectedAssignedTo { get; set; }
         public List<SelectListItem> AssignedTo { get; set; }
         public List<Message> Messages { get; set; }
+      
     }
 }
