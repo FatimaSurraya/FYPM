@@ -42,13 +42,17 @@ namespace FYPM.Controllers
                         Time = TimeSpan.Parse(parts[2]),
                         Event = parts[3],
                         Room = parts[4],
-                        TimetableId = timetable.TimetableId
+                        TimetableId = timetable.TimetableId,
+                        UserName = timetable.User.FirstName + " " + timetable.User.LastName,
+                        UserType = timetable.User.UserType.TypeName
+
                     };
                     timetables.Add(timetableViewModel);
                 }
             }
             return View("Timetable", timetables);
         }
+
 
         public ActionResult AddTimetable()
         {
