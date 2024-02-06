@@ -101,7 +101,7 @@
 
         $("#confirmDeleteButton").on("click", function () {
             $.ajax({
-                url: "@Url.Action("DeleteTask", "Project")" + "?id=" + idToDelete,
+                url: "@Url.Action("DeleteTask", "Task")" + "?id=" + idToDelete,
                 type: "POST",
                 success: window.location.href = "/Task/ListAllTasks"
             });

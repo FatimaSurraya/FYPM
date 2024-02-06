@@ -11,7 +11,7 @@
         <div class="col-md-2">
         </div>
         <div class="col-md-8">
-            @using (Html.BeginForm("SaveTask", "Project", FormMethod.Post, new { id = "taskForm" }))
+            @using (Html.BeginForm("SaveTask", "Task", FormMethod.Post, new { id = "taskForm" }))
             {
                 <div class="form-group">
                     @Html.AntiForgeryToken() <!-- Moved this inside the form -->
@@ -60,7 +60,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/Project/SaveTask",
+            url: "/Task/SaveTask",
             data: JSON.stringify(taskData),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
