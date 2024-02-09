@@ -1,48 +1,116 @@
-﻿@{
-    ViewBag.Title = "About";
-}
-@*<main aria-labelledby="title">
-        <h2 id="title">@ViewBag.Title.</h2>
-        <h3>@ViewBag.Message</h3>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Final Year Project Management System</title>
 
-        <p>Use this area to provide additional information.</p>
-    </main>*@
+    <!-- Add the CSS styles here -->
+    <style>
+        /* Paste the CSS styles here */
+        /* Style for the main container */
+        main {
+            padding: 20px;
+        }
 
-<div>
-    <form method="post">
-        <div class="form-group">
-            <label asp-for="Name">Name</label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name"
-                  class="text-muted"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Email">Email</label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email"
-                  class="text-muted"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Subject">Subject</label>
-            <input asp-for="Subject" class="form-control" />
-            <span asp-validation-for="Subject"
-                  class="text-muted"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Message">Message</label>
-            <textarea rows="5" cols="15"
-                      asp-for="Message" class="form-control"></textarea>
-            <span asp-validation-for="Message"
-                  class="text-muted"></span>
-        </div>
-        <div>
-            <button type="submit"
-                    class="btn btn-success">
-                Send
-            </button>
-        </div>
+        /* Title style */
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align:center;
+        }
 
-    </form>
-</div>
-            
-        
+        /* About card style */
+        .about-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        /* About section style */
+        .about-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Mission section style */
+        .mission h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .mission p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Features section style */
+        .features h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .features ul {
+            list-style-type: none;
+            margin-left: 20px;
+            color: #666;
+        }
+
+            .features ul li {
+                margin-bottom: 5px;
+                color: #666;
+                text-align: center;
+            }
+
+        .features p {
+            color: #666;
+            margin-top: 10px;
+            text-align:center;
+        }
+        .features ul li::before {
+            content: "\2022"; 
+            display: inline-block;
+            width: 1em;
+            text-align: left;
+        }
+
+        /* Hover effect for list items */
+        .features ul li:hover {
+            color: #28a745;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your page content here -->
+    <main aria-labelledby="title">
+        <h2 id="title">About Final Year Project Management System.</h2>
+
+        <div class="about-card">
+            <div class="about-section">
+                <div class="intro">
+                    <p> Final Year Project Management System is proposed as the need to enhance the process of final year projects management system efficiency. </p>
+                </div>
+                <div class="mission">
+                    <h2>Purpose of this Website</h2>
+                    <p>The purpose of this system is to develop a revolutionized website to manage projects and project tasks efficiently between students and supervisors and to reduced communication gap between them.</p>
+                </div>
+            </div>
+            <div class="features">
+                <h2>Project Features</h2>
+                <ul>
+                    <li>Structured Project Management.</li>
+                    <li>Task management</li>
+                    <li>Communication Management</li>
+                    <li>Progress tracking</li>
+                    <li>Files and document sharing </li>
+                    <li>Time management and time scheduling.</li>
+                </ul>
+                <p>Our application stands out from other project management tools with its intuitive interface, robust features, and tailored solutions for final year projects.</p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
