@@ -1,19 +1,64 @@
-﻿
+﻿@{ 
+    ViewBag.Title = "Contact Us";
+}
 
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title</h2>
-    <h3>@ViewBag.Message</h3>
+<head>
+    <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php"
+            type="text/javascript">
+    </script>
+    <!-- Add the CSS styles here -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <style>
+        .fa {
+            padding: 20px;
+            font-size: 30px;
+            width: 70px;
+            text-align: center;
+            text-decoration: none;
+        }
 
+            /* Add a hover effect if you want */
+            .fa:hover {
+                opacity: 0.7;
+            }
+
+
+
+            /* Facebook */
+            .fa.fa-facebook {
+                background: #3B5998;
+                color: white;
+            }
+     
+
+        .fa-linkedin {
+            background: #007bb5;
+            color: white;
+        }
+        .fa-gmail {
+            background: #dd4b39;
+            color: white;
+        }
+
+       
+      
+    </style>
+    <div aria-labelledby="title">
+        <h2 id="title">@ViewBag.Title</h2>
+   
+    </div>
     <address>
         Final Year Project Management System<br />
         Lahore, Pakistan<br />
-        <abbr title="Phone">Phone:</abbr>
-       03064387072
+        
     </address>
+    <div>
+        <h4>Contact Us:</h4>
+        <a name="sharebutton" class="fa fa-facebook" type="button" href="https://www.facebook.com/profile.php?id=100052782885807&mibextid=ZbWKwL"></a>
+        <a name="sharebutton" class="fa fa-linkedin" type="button" href="https://www.linkedin.com/in/fatima-surya651?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app "></a>
+        <a name="sharebutton" class="fa fa-envelope fa-gmail" type="button" href="mailto:mc210401279fsu@vu.edu.com"></a>
 
-    <address>
-        <strong>Support:</strong>   <a href="mailto:mc210401279fsu@vu.edu.com">mc210401279fsu@vu.edu.com</a><br />
-  
-    </address>
-
-</main>
+    </div>
+</body>
