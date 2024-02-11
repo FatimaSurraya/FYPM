@@ -7,12 +7,12 @@
 
 
 <style>
-    /* Define a custom class for the select element */
+
     .custom-select {
         appearance: none; /* Remove default styling on certain browsers */
         -webkit-appearance: none; /* Remove default styling on Safari/Chrome */
         -moz-appearance: none; /* Remove default styling on Firefox */
-
+       
         border: 1px solid #ccc; /* Add a border */
         border-radius: 5px; /* Add rounded corners */
         background-color: #fff; /* Set background color */
@@ -24,18 +24,25 @@
         /* Style the dropdown arrow */
         .custom-select::after {
             content: "\25BC"; /* Unicode arrow-down symbol */
-            position: absolute;
+            position: center;
             top: 50%;
-            right: 10px;
+            right: 20px;
             transform: translateY(-50%);
             pointer-events: none; /* Prevent clicking on the arrow */
+            
         }
 
         /* Style the selected option */
         .custom-select option:checked {
             background-color: #007bff; /* Highlight the selected option */
             color: #fff; /* Text color for selected option */
+         
         }
+    .table td, .table th {
+        padding-left: 20px; 
+    }
+    
+
 </style>
 
 <div class="card p-3 mt-3">
