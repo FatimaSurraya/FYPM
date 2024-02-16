@@ -9,11 +9,16 @@ using Twilio.AspNet.Mvc;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.TwiML;
 using Twilio.Types;
-using Twilio.Types;
+using Twilio.Exceptions;
+using Microsoft.Extensions.Logging;
+using Twilio.Rest.Verify.V2.Service;
 namespace FYPM.Controllers
 {
     public class MessagesController : Controller
     {
+
+
+
         FYP_MSEntities1 dbContext = new FYP_MSEntities1();
         // GET: Messages
         public ActionResult Message()
@@ -87,22 +92,25 @@ namespace FYPM.Controllers
             return Json(-1);
         }
 
-        static void Main(string[] args)
-        {
-            {
-                var accountSid = "AC66d0c98f4daedd97410a92307386c62b";
-                var authToken = "[7a5063806b1433de80234d635e7e25bd]";
-                TwilioClient.Init(accountSid, authToken);
+        //static void Main(string[] args)
+        //{
+        //    {
+        //        var accountSid = "AC66d0c98f4daedd97410a92307386c62b";
+        //        var authToken = "[7a5063806b1433de80234d635e7e25bd]";
+        //        TwilioClient.Init(accountSid, authToken);
 
-                var messageOptions = new CreateMessageOptions(
-                  new PhoneNumber("+16815324812"));
-                messageOptions.From = new PhoneNumber("+16815324812");
+        //        var messageOptions = new CreateMessageOptions(
+        //          new PhoneNumber("+16815324812"));
+        //        messageOptions.From = new PhoneNumber("+16815324812");
 
 
-                var message = MessageResource.Create(messageOptions);
-                Console.WriteLine(message.Body);
+        //        var message = MessageResource.Create(messageOptions);
+        //        Console.WriteLine(message.Body);
             }
         }
-    }
-}
+
+    
+
+
+
 
