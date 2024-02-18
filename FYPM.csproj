@@ -408,7 +408,7 @@
     <Content Include="Views\Task\EditTask.cshtml" />
     <Content Include="Views\Task\StudentTask.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
-    <Content Include="Views\Messages\Message.cshtml" />
+    <Content Include="Views\Messages\Sms.cshtml" />
     <Content Include="Views\Project\ProjectRequests.cshtml" />
     <Content Include="Views\TimeTable\AddTimetable.cshtml" />
     <Content Include="Views\TimeTable\TimeTable.cshtml" />
