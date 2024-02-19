@@ -96,6 +96,7 @@ namespace FYPM.Controllers
             }
             catch (Exception ex)
             {
+
                 return Json(-2);
             }
         }
