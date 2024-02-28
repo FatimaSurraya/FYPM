@@ -7,7 +7,19 @@
 
 
 
-<h2>SendSms</h2>
-<div>
-    <h2>Sid</h2> @ViewData["Success"]
-</div>
+<h2>Send SMS</h2>
+
+@using (Html.BeginForm("SendSms", "Sms", FormMethod.Post))
+{
+    <div>
+        <label for="to">To:</label>
+        <input type="text" name="to" id="to" />
+    </div>
+    <div>
+        <label for="message">Message:</label>
+        <textarea name="message" id="message"></textarea>
+    </div>
+    <div>
+        <input type="submit" value="Send" />
+    </div>
+}
