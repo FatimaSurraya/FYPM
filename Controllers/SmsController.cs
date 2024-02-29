@@ -19,6 +19,11 @@ namespace FYPM.Controllers
                 ConfigurationManager.AppSettings["TwilioAuthToken"]
             );
         }
+        [HttpGet]
+        public ActionResult SendSms()
+        {
+            return View();
+        }
         [HttpPost]
         public ActionResult SendSms(string to, string message)
         {
