@@ -16,7 +16,8 @@ namespace FYPM.Controllers
         {
             smsService = new TwilioSmsService(
                 ConfigurationManager.AppSettings["TwilioAccountSid"],
-                ConfigurationManager.AppSettings["TwilioAuthToken"]
+                ConfigurationManager.AppSettings["TwilioAuthToken"],
+                 ConfigurationManager.AppSettings["TwilioPhoneNumber"]
             );
         }
         [HttpGet]

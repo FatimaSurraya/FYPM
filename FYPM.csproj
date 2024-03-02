@@ -420,7 +420,7 @@
     <Content Include="Views\Meeting\AddMeetings.cshtml" />
     <Content Include="Views\Meeting\StartMeeting.cshtml" />
     <Content Include="Views\Project\StudentProject.cshtml" />
-    <Content Include="Views\Messages\SendSms.cshtml" />
+    <Content Include="Views\Shared\SendSms.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
