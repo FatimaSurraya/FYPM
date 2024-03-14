@@ -113,7 +113,24 @@
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script>
+        $(document).ready(function () {
+            $("#register_firstname").on("input", function () {
+                var firstName = $(this).val();
+                if (!/^[a-zA-Z]+$/.test(firstName)) {
+                    alert("First name should contain only alphabetic characters");
+                    $(this).val(firstName.replace(/[^a-zA-Z]+/g, ''));
+                }
+            });
 
+            $("#register_lastname").on("input", function () {
+                var lastName = $(this).val();
+                if (!/^[a-zA-Z]+$/.test(lastName)) {
+                    alert("Last name should contain only alphabetic characters");
+
+                    $(this).val(lastName.replace(/[^a-zA-Z]+/g, ''));
+                }
+            });
+        });
         $("#btn_register").click(function () {
             var FirstName = $("#register_firstname").val();
             var LastName = $("#register_lastname").val();

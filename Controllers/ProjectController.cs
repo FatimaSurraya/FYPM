@@ -221,17 +221,28 @@ namespace FYPM.Controllers
         public ActionResult MyProject()
         {
             var userId = Convert.ToInt32(Session["UserID"]);
-            var projectId = dbContext.StudentProjectRequests.FirstOrDefault(x => x.UserId == userId && (bool)x.IsApproved).ProjectId;
-            var projects = dbContext.ProjectDetails.Where(x => x.ProjectId == projectId).Select(p => new ProjectViewModel
+            var studentProjectRequest = dbContext.StudentProjectRequests.FirstOrDefault(x => x.UserId == userId && (bool)x.IsApproved);
+
+            if (studentProjectRequest != null)
             {
-                ProjectId = p.ProjectId,
-                Title = p.Title,
-                Description = p.Description,
-                StudentsAllowed = p.StudentsAllowed,
-                HasSentRequest = p.StudentProjectRequests.Any(r => r.UserId == userId)
-            }).ToList();
-            return View("StudentProject", projects);
+                var projectId = studentProjectRequest.ProjectId;
+                var projects = dbContext.ProjectDetails.Where(x => x.ProjectId == projectId).Select(p => new ProjectViewModel
+                {
+                    ProjectId = p.ProjectId,
+                    Title = p.Title,
+                    Description = p.Description,
+                    StudentsAllowed = p.StudentsAllowed,
+                    HasSentRequest = p.StudentProjectRequests.Any(r => r.UserId == userId)
+                }).ToList();
+                return View("StudentProject", projects);
+            }
+            else
+            {
+                // Redirect to the "View Projects" page
+                return RedirectToAction("ListAllStudentProjects");
+            }
         }
+
         [HttpPost]
         public ActionResult CancelProjectRequest(int projectId)
         {

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FYPM.Models.ViewModel;
+using Ionic.Zip;
+using System.IO;
 
 namespace FYPM.Controllers
 {
@@ -139,8 +141,42 @@ namespace FYPM.Controllers
             return Json(new { success = false, message = "Task not found." });
         }
 
-       
 
+        public ActionResult DownloadDocuments(int projectId = 0)
+        {
+            var documents = dbContext.ProjectDocuments?.Where(x => x.ProjectId == projectId)?.Select(x => new
+            {
+                x.DocumentPath,
+                x.DocumentName
+            }).ToList();
+
+            if (documents != null && documents.Count() > 0)
+            {
+                using (MemoryStream zipStream = new MemoryStream())
+                {
+                    using (ZipFile zipFile = new ZipFile())
+                    {
+                        foreach (var document in documents)
+                        {
+                            if (!string.IsNullOrEmpty(document.DocumentPath) && System.IO.File.Exists(document.DocumentPath))
+                            {
+                                byte[] fileBytes = System.IO.File.ReadAllBytes(document.DocumentPath);
+                                string fileName = document.DocumentName;
+                                zipFile.AddEntry(fileName, fileBytes);
+                            }
+                        }
+
+                        zipFile.Save(zipStream);
+                    }
+
+                    string zipFileName = "taskdocuments.zip";
+
+                    return File(zipStream.ToArray(), "application/zip", zipFileName);
+                }
+            }
+
+            return HttpNotFound();
+        }
 
 
     }
