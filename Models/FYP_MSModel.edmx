@@ -5,6 +5,34 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="FYP_MSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="GroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="group_users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="group_id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="role" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="isApproved" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Invitations">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sender_id" Type="int" Nullable="false" />
+          <Property Name="group_id" Type="int" Nullable="false" />
+          <Property Name="status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Meetings">
           <Key>
             <PropertyRef Name="MeetingId" />
@@ -14,6 +42,7 @@
           <Property Name="ScheduledDate" Type="datetime" Nullable="false" />
           <Property Name="SupervisorID" Type="int" Nullable="false" />
           <Property Name="StudentID" Type="int" />
+          <Property Name="channelId" Type="int" />
         </EntityType>
         <EntityType Name="Messages">
           <Key>
@@ -128,7 +157,7 @@
           <Property Name="UserTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TypeName" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <Association Name="FK__StudentPr__Proje__440B1D61">
+        <Association Name="FK__StudentPr__Proje__656C112C">
           <End Role="ProjectDetails" Type="Self.ProjectDetails" Multiplicity="0..1" />
           <End Role="StudentProjectRequest" Type="Self.StudentProjectRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -140,7 +169,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StudentPr__UserI__44FF419A">
+        <Association Name="FK__StudentPr__UserI__66603565">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="StudentProjectRequest" Type="Self.StudentProjectRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -149,6 +178,66 @@
             </Principal>
             <Dependent Role="StudentProjectRequest">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Group_ProjectId">
+          <End Role="ProjectDetails" Type="Self.ProjectDetails" Multiplicity="1" />
+          <End Role="Group" Type="Self.Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectDetails">
+              <PropertyRef Name="ProjectId" />
+            </Principal>
+            <Dependent Role="Group">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_group_users_group_id">
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
+          <End Role="group_users" Type="Self.group_users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="group_users">
+              <PropertyRef Name="group_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_group_users_user_id">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="group_users" Type="Self.group_users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="group_users">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_invitation_group_id">
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
+          <End Role="Invitations" Type="Self.Invitations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="Invitations">
+              <PropertyRef Name="group_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_invitation_sender_id">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Invitations" Type="Self.Invitations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Invitations">
+              <PropertyRef Name="sender_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -352,6 +441,9 @@
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="FYP_MSModelStoreContainer">
+          <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="group_users" EntityType="Self.group_users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Invitations" EntityType="Self.Invitations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Meetings" EntityType="Self.Meetings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectDetails" EntityType="Self.ProjectDetails" Schema="dbo" store:Type="Tables" />
@@ -364,13 +456,33 @@
           <EntitySet Name="Timetables" EntityType="Self.Timetables" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__StudentPr__Proje__440B1D61" Association="Self.FK__StudentPr__Proje__440B1D61">
+          <AssociationSet Name="FK__StudentPr__Proje__656C112C" Association="Self.FK__StudentPr__Proje__656C112C">
             <End Role="ProjectDetails" EntitySet="ProjectDetails" />
             <End Role="StudentProjectRequest" EntitySet="StudentProjectRequest" />
           </AssociationSet>
-          <AssociationSet Name="FK__StudentPr__UserI__44FF419A" Association="Self.FK__StudentPr__UserI__44FF419A">
+          <AssociationSet Name="FK__StudentPr__UserI__66603565" Association="Self.FK__StudentPr__UserI__66603565">
             <End Role="Users" EntitySet="Users" />
             <End Role="StudentProjectRequest" EntitySet="StudentProjectRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Group_ProjectId" Association="Self.FK_Group_ProjectId">
+            <End Role="ProjectDetails" EntitySet="ProjectDetails" />
+            <End Role="Group" EntitySet="Group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_group_users_group_id" Association="Self.FK_group_users_group_id">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="group_users" EntitySet="group_users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_group_users_user_id" Association="Self.FK_group_users_user_id">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="group_users" EntitySet="group_users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_invitation_group_id" Association="Self.FK_invitation_group_id">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="Invitations" EntitySet="Invitations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_invitation_sender_id" Association="Self.FK_invitation_sender_id">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Invitations" EntitySet="Invitations" />
           </AssociationSet>
           <AssociationSet Name="FK_Meetings_Users_Student" Association="Self.FK_Meetings_Users_Student">
             <End Role="Users" EntitySet="Users" />
@@ -440,6 +552,7 @@
           <Property Name="StudentID" Type="Int32" />
           <NavigationProperty Name="User" Relationship="Self.FK_Meetings_Users_Student" FromRole="Meetings" ToRole="Users" />
           <NavigationProperty Name="User1" Relationship="Self.FK_Meetings_Users_Supervisor" FromRole="Meetings" ToRole="Users" />
+          <Property Name="channelId" Type="Int32" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -470,6 +583,7 @@
           <NavigationProperty Name="ProjectDocuments" Relationship="Self.FK_ProjectDocuments_ProjectDetails" FromRole="ProjectDetails" ToRole="ProjectDocuments" />
           <NavigationProperty Name="Tasks" Relationship="Self.FK_Tasks_ProjectDetails" FromRole="ProjectDetails" ToRole="Tasks" />
           <NavigationProperty Name="StudentProjectRequests" Relationship="FYP_MSModel.FK__StudentPr__Proje__440B1D61" FromRole="ProjectDetail" ToRole="StudentProjectRequest" />
+          <NavigationProperty Name="Groups" Relationship="FYP_MSModel.FK_Group_ProjectId" FromRole="ProjectDetail" ToRole="Group" />
         </EntityType>
         <EntityType Name="ProjectDocument">
           <Key>
@@ -561,6 +675,8 @@
           <NavigationProperty Name="Timetables" Relationship="Self.FK_Timetables_Users" FromRole="Users" ToRole="Timetables" />
           <NavigationProperty Name="UserType" Relationship="Self.FK_Users_UserTypes" FromRole="Users" ToRole="UserTypes" />
           <NavigationProperty Name="StudentProjectRequests" Relationship="FYP_MSModel.FK__StudentPr__UserI__44FF419A" FromRole="User" ToRole="StudentProjectRequest" />
+          <NavigationProperty Name="group_users" Relationship="FYP_MSModel.FK_group_users_user_id" FromRole="User" ToRole="group_users" />
+          <NavigationProperty Name="Invitations" Relationship="FYP_MSModel.FK_invitation_sender_id" FromRole="User" ToRole="Invitation" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -841,6 +957,29 @@
             <End Role="User" EntitySet="Users" />
             <End Role="StudentProjectRequest" EntitySet="StudentProjectRequests" />
           </AssociationSet>
+          <EntitySet Name="Groups" EntityType="FYP_MSModel.Group" />
+          <EntitySet Name="group_users" EntityType="FYP_MSModel.group_users" />
+          <EntitySet Name="Invitations" EntityType="FYP_MSModel.Invitation" />
+          <AssociationSet Name="FK_Group_ProjectId" Association="FYP_MSModel.FK_Group_ProjectId">
+            <End Role="ProjectDetail" EntitySet="ProjectDetails" />
+            <End Role="Group" EntitySet="Groups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_group_users_group_id" Association="FYP_MSModel.FK_group_users_group_id">
+            <End Role="Group" EntitySet="Groups" />
+            <End Role="group_users" EntitySet="group_users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_invitation_group_id" Association="FYP_MSModel.FK_invitation_group_id">
+            <End Role="Group" EntitySet="Groups" />
+            <End Role="Invitation" EntitySet="Invitations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_group_users_user_id" Association="FYP_MSModel.FK_group_users_user_id">
+            <End Role="User" EntitySet="Users" />
+            <End Role="group_users" EntitySet="group_users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_invitation_sender_id" Association="FYP_MSModel.FK_invitation_sender_id">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Invitation" EntitySet="Invitations" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -889,6 +1028,101 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="GroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectId" Type="Int32" Nullable="false" />
+          <Property Name="GroupName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ProjectDetail" Relationship="FYP_MSModel.FK_Group_ProjectId" FromRole="Group" ToRole="ProjectDetail" />
+          <NavigationProperty Name="group_users" Relationship="FYP_MSModel.FK_group_users_group_id" FromRole="Group" ToRole="group_users" />
+          <NavigationProperty Name="Invitations" Relationship="FYP_MSModel.FK_invitation_group_id" FromRole="Group" ToRole="Invitation" />
+        </EntityType>
+        <EntityType Name="group_users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="group_id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="isApproved" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Group" Relationship="FYP_MSModel.FK_group_users_group_id" FromRole="group_users" ToRole="Group" />
+          <NavigationProperty Name="User" Relationship="FYP_MSModel.FK_group_users_user_id" FromRole="group_users" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Invitation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sender_id" Type="Int32" Nullable="false" />
+          <Property Name="group_id" Type="Int32" Nullable="false" />
+          <Property Name="status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Group" Relationship="FYP_MSModel.FK_invitation_group_id" FromRole="Invitation" ToRole="Group" />
+          <NavigationProperty Name="User" Relationship="FYP_MSModel.FK_invitation_sender_id" FromRole="Invitation" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Group_ProjectId">
+          <End Type="FYP_MSModel.ProjectDetail" Role="ProjectDetail" Multiplicity="1" />
+          <End Type="FYP_MSModel.Group" Role="Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectDetail">
+              <PropertyRef Name="ProjectId" />
+            </Principal>
+            <Dependent Role="Group">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_group_users_group_id">
+          <End Type="FYP_MSModel.Group" Role="Group" Multiplicity="1" />
+          <End Type="FYP_MSModel.group_users" Role="group_users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="group_users">
+              <PropertyRef Name="group_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_invitation_group_id">
+          <End Type="FYP_MSModel.Group" Role="Group" Multiplicity="1" />
+          <End Type="FYP_MSModel.Invitation" Role="Invitation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="Invitation">
+              <PropertyRef Name="group_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_group_users_user_id">
+          <End Type="FYP_MSModel.User" Role="User" Multiplicity="1" />
+          <End Type="FYP_MSModel.group_users" Role="group_users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="group_users">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_invitation_sender_id">
+          <End Type="FYP_MSModel.User" Role="User" Multiplicity="1" />
+          <End Type="FYP_MSModel.Invitation" Role="Invitation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Invitation">
+              <PropertyRef Name="sender_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -898,6 +1132,7 @@
           <EntitySetMapping Name="Meetings">
             <EntityTypeMapping TypeName="FYP_MSModel.Meeting">
               <MappingFragment StoreEntitySet="Meetings">
+                <ScalarProperty Name="channelId" ColumnName="channelId" />
                 <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
                 <ScalarProperty Name="MeetingType" ColumnName="MeetingType" />
                 <ScalarProperty Name="ScheduledDate" ColumnName="ScheduledDate" />
@@ -1051,6 +1286,37 @@
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
                 <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="FYP_MSModel.Group">
+              <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="group_users">
+            <EntityTypeMapping TypeName="FYP_MSModel.group_users">
+              <MappingFragment StoreEntitySet="group_users">
+                <ScalarProperty Name="isApproved" ColumnName="isApproved" />
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invitations">
+            <EntityTypeMapping TypeName="FYP_MSModel.Invitation">
+              <MappingFragment StoreEntitySet="Invitations">
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="sender_id" ColumnName="sender_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

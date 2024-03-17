@@ -32,6 +32,14 @@
         <EntityTypeShape EntityType="FYP_MSModel.StudentProjectRequest" Width="1.5" PointX="10.5" PointY="11.375" IsExpanded="true" />
         <AssociationConnector Association="FYP_MSModel.FK__StudentPr__Proje__440B1D61" />
         <AssociationConnector Association="FYP_MSModel.FK__StudentPr__UserI__44FF419A" />
+        <EntityTypeShape EntityType="FYP_MSModel.Group" Width="1.5" PointX="7.5" PointY="12.75" />
+        <EntityTypeShape EntityType="FYP_MSModel.group_users" Width="1.5" PointX="12.75" PointY="13.5" />
+        <EntityTypeShape EntityType="FYP_MSModel.Invitation" Width="1.5" PointX="12.75" PointY="9.5" />
+        <AssociationConnector Association="FYP_MSModel.FK_Group_ProjectId" />
+        <AssociationConnector Association="FYP_MSModel.FK_group_users_group_id" />
+        <AssociationConnector Association="FYP_MSModel.FK_invitation_group_id" />
+        <AssociationConnector Association="FYP_MSModel.FK_group_users_user_id" />
+        <AssociationConnector Association="FYP_MSModel.FK_invitation_sender_id" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

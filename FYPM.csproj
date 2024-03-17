@@ -231,6 +231,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\SmsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MeetingController.cs" />
@@ -257,6 +258,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FYP_MSModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Group.cs">
+      <DependentUpon>FYP_MSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\group_users.cs">
+      <DependentUpon>FYP_MSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Invitation.cs">
+      <DependentUpon>FYP_MSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ISmsService.cs" />
     <Compile Include="Models\Meeting.cs">
@@ -421,6 +431,8 @@
     <Content Include="Views\Meeting\StartMeeting.cshtml" />
     <Content Include="Views\Project\StudentProject.cshtml" />
     <Content Include="Views\Shared\SendSms.cshtml" />
+    <Content Include="Views\Group\Group.cshtml" />
+    <Content Include="Views\Group\SendJoinRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

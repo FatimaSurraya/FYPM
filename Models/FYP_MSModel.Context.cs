@@ -39,6 +39,9 @@ namespace FYPM.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<StudentProjectRequest> StudentProjectRequests { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<group_users> group_users { get; set; }
+        public virtual DbSet<Invitation> Invitations { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

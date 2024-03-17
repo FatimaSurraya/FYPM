@@ -12,16 +12,15 @@ namespace FYPM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Result
+    public partial class group_users
     {
-        public int ResultId { get; set; }
-        public int TaskID { get; set; }
-        public int StudentID { get; set; }
-        public int SupervisorID { get; set; }
-        public int Score { get; set; }
+        public int id { get; set; }
+        public int group_id { get; set; }
+        public int user_id { get; set; }
+        public string role { get; set; }
+        public bool isApproved { get; set; }
     
-        public virtual Task Task { get; set; }
+        public virtual Group Group { get; set; }
         public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
     }
 }

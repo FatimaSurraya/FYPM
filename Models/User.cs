@@ -27,6 +27,8 @@ namespace FYPM.Models
             this.Tasks = new HashSet<Task>();
             this.Timetables = new HashSet<Timetable>();
             this.StudentProjectRequests = new HashSet<StudentProjectRequest>();
+            this.group_users = new HashSet<group_users>();
+            this.Invitations = new HashSet<Invitation>();
         }
     
         public int UserId { get; set; }
@@ -59,5 +61,9 @@ namespace FYPM.Models
         public virtual UserType UserType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentProjectRequest> StudentProjectRequests { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<group_users> group_users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Invitation> Invitations { get; set; }
     }
 }
