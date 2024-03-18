@@ -69,22 +69,38 @@
 <script src="~/Scripts/bootstrap.min.js"></script>
 
 <script>
-
     function submitProject() {
-        var Title = document.getElementById("Title").value;
-        var Description = document.getElementById("Description").value;
-        var Skills = document.getElementById("Skill").value;
+        var Title = document.getElementById("Title").value.trim();
+        var Description = document.getElementById("Description").value.trim();
+        var Skills = document.getElementById("Skill").value.trim();
         var domain = document.getElementById("domain").value;
-        var Tool = document.getElementById("Tool").value;
-        var studentallowed = document.getElementById("studentallowed").value;
+        var Tool = document.getElementById("Tool").value.trim();
+        var studentallowed = document.getElementById("studentallowed").value.trim();
         var uploadDocuments = document.getElementById("UploadDocument").files;
+
         // Validate Title field
-        if (!/^[a-zA-Z\s]+$/.test(Title)) {
-            document.getElementById("titleError").innerText = "Title should only contain letters and spaces.";
+        if (!/^[a-zA-Z\s]{3,20}$/.test(Title)) {
+            document.getElementById("titleError").innerText = "Title should only contain letters and spaces and should be between 3 and 20 characters.";
             return;
         } else {
             document.getElementById("titleError").innerText = "";
         }
+
+        // Validate Description field (should not contain numbers)
+        if (/\d/.test(Description)) {
+            alert("Description should not contain numbers.");
+            return;
+        }
+        if (/\d/.test(Skills)) {
+            alert("Skills should not contain numbers.");
+            return;
+        }
+        if (/\d/.test(Tool)) {
+            alert("Tools should not contain numbers.");
+            return;
+        }
+
+     
         // Validate Title, Skill, and Tool fields
         if (!Title || !Skills || !Tool) {
             alert("Please fill in all required fields (Title, Skill, Tool) to submit.");
@@ -100,6 +116,12 @@
         // Validate Student Allowed field (ensure it's a positive number)
         if (studentallowed <= 0 || isNaN(studentallowed)) {
             alert("Please enter a valid number of Students Allowed.");
+            return;
+        }
+
+        // Validate Document upload
+        if (uploadDocuments.length === 0) {
+            alert("Please upload at least one document.");
             return;
         }
 
@@ -129,8 +151,9 @@
             }
         });
     }
-
 </script>
+
+
 
 
 

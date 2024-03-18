@@ -1,111 +1,51 @@
-﻿@{
-    ViewBag.Title = "Send Join Request";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@model FYPM.Models.Invitation
+
+@{
+    ViewBag.Title = "Send Group Join Request";
 }
-@model IEnumerable<FYPM.Models.Invitation>
 
-<div class="card p-3 mt-3">
-    <div class="card-title d-flex flex-wrap justify-content-between align-items-center mb-0">
-        <h3 class="card-label">
-            Create Group
-        </h3>
-    </div>
+<h2>Send Group Join Request</h2>
 
-    <div class="card-body">
-        <div class="wrapper wrapper-content animated fadeInRight">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-content">
-                            <div class="wrapper wrapper-content table-responsive">
-                                <table class="cstm_table table table-hover table-striped" id="mttable">
-                                    <thead>
-                                        <tr>
-                                            <th>Group Id</th>
-                                            <th>Group Name</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="table_body" class="scrollable">
-                                        @foreach (var group in Model)
-                                        {
-                                            <tr>
-                                                <td>@group.GroupId</td>
-                                                <td>@group.GroupName</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+@using (Html.BeginForm("SendJoinRequest", "Group", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.sender_id, "Sender ID", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.sender_id, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.sender_id, "", new { @class = "text-danger" })
         </div>
     </div>
 
-    <div class="card-footer">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createGroupModal">
-            Add New Group
-        </button>
+    <div class="form-group">
+        @Html.LabelFor(model => model.group_id, "Group ID", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.group_id, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.group_id, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="createGroupModal" tabindex="-1" role="dialog" aria-labelledby="createGroupModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createGroupModalLabel">Create New Group</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form for creating a new group -->
-                        <form id="createGroupForm">
-                            <div class="form-group">
-                                <label for="groupId">Group ID</label>
-                                <input type="text" class="form-control" id="groupId" name="groupId" placeholder="Enter Group ID">
-                            </div>
-                            <div class="form-group">
-                                <label for="groupName">Group Name</label>
-                                <input type="text" class="form-control" id="groupName" name="groupName" placeholder="Enter Group Name">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="CreateGroup()">Create</button>
-                    </div>
-                </div>
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.status, "Status", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.status, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Send Request" class="btn btn-primary" />
         </div>
     </div>
 </div>
+}
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    function CreateGroup() {
-        var groupId = $('#groupId').val();
-        var groupName = $('#groupName').val();
-
-        $.ajax({
-            url: '/Group/CreateGroup',
-            method: 'post',
-            data: { 'groupId': groupId, 'groupName': groupName },
-            success: function (response) {
-                if (response.success) {
-                    alert("Group has been created successfully");
-                    window.location.reload(); // Reload the page to update the group list
-                } else {
-                    alert("Error: " + response.errorMessage);
-                }
-            },
-            error: function () {
-                alert("An error occurred while processing your request. Please try again later.");
-            }
-        });
-    }
-
-
-</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
