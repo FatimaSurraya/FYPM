@@ -15,6 +15,7 @@ namespace FYPM.Controllers
 {
     public class ProjectController : Controller
     {
+
         FYP_MSEntities1 dbContext = new FYP_MSEntities1();
 
         public ActionResult UploadProject()
@@ -155,15 +156,10 @@ namespace FYPM.Controllers
         }
         public ActionResult ListAllProjects()
         {
-            var role = Convert.ToString(Session["RoleName"]);
-            List<ProjectDetail> projectList = new List<ProjectDetail>();
-            if (role == "Supervisor")
-            {
-                var userId = Convert.ToInt32(Session["UserID"]);
-                projectList = dbContext.ProjectDetails.Where(x => x.SupervisorID == userId).ToList();
-            }
+            List<ProjectDetail> projectList = dbContext.ProjectDetails.ToList();
             return View("ProjectGrid", projectList);
         }
+
         public ActionResult DeleteDocument(int documentId, int projectId)
         {
             var document = dbContext.ProjectDocuments.FirstOrDefault(x => x.DocumentId == documentId);

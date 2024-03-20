@@ -92,7 +92,7 @@ namespace FYPM.Controllers
             var viewModel = new group_users
             {
                 Group = group,
-                user_id = "Member"
+                     
             };
 
             return View(viewModel);

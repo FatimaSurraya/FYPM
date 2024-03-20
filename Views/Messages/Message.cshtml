@@ -30,7 +30,8 @@
                         <textarea class="form-control" id="MessageText" name="MessageText" rows="3" required></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" onclick="sendMessage()">Send</button>
+                    <button type="button" class="btn btn-primary" onclick="sendMessage()">Send</button>
+
                 </div>
             </div>
         </div>
@@ -63,7 +64,7 @@
 <script>
     function sendMessage() {
         var selectedAssignedTo = $("#SelectedAssignedTo").val();
-        var message = $("#MessageText").val()
+        var message = $("#MessageText").val();
 
         var taskData = {
             SelectedAssignedTo: selectedAssignedTo,
@@ -72,22 +73,18 @@
 
         $.ajax({
             type: "POST",
-            url: "/Messages/Message",
-            data: JSON.stringify(taskData),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: MessageSent
-        });
-
-        function MessageSent(response) {
-            if (response == 1) {
-                alert("Message Sent !!!");
-                window.location.href = "/Messages/Message";
+            url: "/Messages/SendMessage", // Update the URL to match the correct action name
+            data: { SelectedAssignedTo: selectedAssignedTo, Message: message }, // Pass data directly instead of JSON.stringify
+            success: function (response) {
+                if (response === 1) {
+                    alert("Message Sent !!!");
+                    window.location.reload(); // Reload the page after sending the message
+                }
+            },
+            error: function () {
+                alert("Failed to send message. Please try again later.");
             }
-        }
+        });
     }
 
-    jQuery(document).ready(function ($) {
-        $('#SelectedAssignedTo').select2();
-    });
 </script>

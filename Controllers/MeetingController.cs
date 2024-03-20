@@ -29,7 +29,7 @@ namespace FYPM.Controllers
         }
         public ActionResult StartMeeting(string channel) {
             AgoraTokenBuilderService agoraTokenBuilderService = new AgoraTokenBuilderService();
-            var userId = Session["UserID"].ToString();
+             var userId = Session["UserID"].ToString();
             var appId = "5c84b8b3638042ff9358081f81682120";
             var certificateId = "78159623a565417696a509234e9eb7c6";
             uint privilegeExpiredTs = (uint)agoraTokenBuilderService.ConvertToUnixTimestamp(DateTime.Now) + 86400;

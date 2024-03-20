@@ -18,55 +18,55 @@
                     <div class="ibox float-e-margins">
                         <div class="ibox-content">
                             <div class="wrapper wrapper-content">
-                                    <table class="table cstm_table table-hover table-responsive table-striped">
-                                        <thead>
+                                <table class="table cstm_table table-hover table-responsive table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>User ID</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>User Type</th>
+                                            <th>Created Date</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_body" class="scrollable">
+                                        @foreach (var user in Model)
+                                        {
                                             <tr>
-                                                <th>User ID</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>Email</th>
-                                                <th>User Type</th>
-                                                <th>Created Date</th>
-                                                <th>Edit</th>
-                                                <th>Delete</th>
-                                                <th>Status</th>
+                                                <td>@user.UserId</td>
+                                                <td>@user.FirstName</td>
+                                                <td>@user.LastName</td>
+                                                <td>@user.Email</td>
+                                                <td>@user.UserType.TypeName</td>
+                                                <td>@user.CreatedDate.Value.Date</td>
+
+
+                                                <td>
+                                                    <a class="btn btn-primary" href="@Url.Action("Edit", "Users", new { id = user.UserId })">Edit</a>
+                                                </td>
+
+                                                <td>
+                                                    <a class="btn btn-danger delete-button" data-id="@user.UserId">Delete</a>
+                                                </td>
+
+                                                <td>
+                                                    <div class="dropdown">
+
+                                                        <select class="btn btn-secondary dropdown-toggle" id="statusDropdown">
+                                                            <option value="1">Active</option>
+                                                            <option value="2">Inactive</option>
+
+                                                        </select>
+                                                    </div>
+                                                </td>
+
                                             </tr>
-                                        </thead>
-                                        <tbody id="table_body" class="scrollable">
-                                            @foreach (var user in Model)
-                                            {
-                                                <tr>
-                                                    <td>@user.UserId</td>
-                                                    <td>@user.FirstName</td>
-                                                    <td>@user.LastName</td>
-                                                    <td>@user.Email</td>
-                                                    <td>@user.UserType.TypeName</td>
-                                                    <td>@user.CreatedDate.Value.Date</td>
-
-
-                                                    <td>
-                                                        <a class="btn btn-primary" href="@Url.Action("Edit", "Users", new { id = user.UserId })">Edit</a>
-                                                    </td>
-
-                                                    <td>
-                                                        <a class="btn btn-danger delete-button" data-id="@user.UserId">Delete</a>
-                                                    </td>
-
-                                                    <td>
-                                                        <div class="dropdown">
-
-                                                            <select class="btn btn-secondary dropdown-toggle" id="statusDropdown">
-                                                                <option value="1">Active</option>
-                                                                <option value="2">Inactive</option>
-
-                                                            </select>
-                                                        </div>
-                                                    </td>
-
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -106,11 +106,18 @@
 
         $("#confirmDeleteButton").on("click", function () {
             $.ajax({
-                url: "@Url.Action("Delete", "User")" + "?id=" + userIdToDelete,
+                url: "@Url.Action("Delete", "Users")" + "?id=" + userIdToDelete,
                 type: "POST",
-                success: window.location.href = "/User/UsersDetail"
+                success: function () {
+                    // Reload the page after successful deletion
+                    window.location.href = "/Users/UsersDetail";
+                },
+                error: function () {
+                    alert("An error occurred while deleting the user.");
+                }
             });
         });
     });
 </script>
+
 

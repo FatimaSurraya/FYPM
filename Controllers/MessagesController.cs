@@ -92,24 +92,9 @@ namespace FYPM.Controllers
             return Json(-1);
         }
 
-        //static void Main(string[] args)
-        //{
-        //    {
-        //        var accountSid = "AC66d0c98f4daedd97410a92307386c62b";
-        //        var authToken = "[7a5063806b1433de80234d635e7e25bd]";
-        //        TwilioClient.Init(accountSid, authToken);
+    }
+}
 
-        //        var messageOptions = new CreateMessageOptions(
-        //          new PhoneNumber("+16815324812"));
-        //        messageOptions.From = new PhoneNumber("+16815324812");
-
-
-        //        var message = MessageResource.Create(messageOptions);
-        //        Console.WriteLine(message.Body);
-            }
-        }
-
-    
 
 
 

@@ -12,7 +12,11 @@ namespace FYPM
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            routes.MapRoute(
+          name: "UsersDetail",
+          url: "Users/UsersDetail",
+          defaults: new { controller = "Users", action = "UsersDetail" }
+      );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
